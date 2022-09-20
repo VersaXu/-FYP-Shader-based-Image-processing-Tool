@@ -1,4 +1,4 @@
-## 悦智最新最快得 react 脚手架
+## 最新最快得 react 脚手架
 
 > 基于 Vite2、React17、React Router V6、Typescript、Eslint、Prettier 等库，是一个开箱即用得 react 项目脚手架，助您快速开发 react 项目
 
