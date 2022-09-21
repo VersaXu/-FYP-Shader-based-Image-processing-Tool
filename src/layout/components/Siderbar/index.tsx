@@ -115,8 +115,8 @@ const Sidebar: React.FC<any> = props => {
       >
         <div className={`${collapsed && styles['custom-aside-cpllapsed']} ${styles['sider-wrap']}`}>
           <div className={styles['sider-logo']}>
-            <img src={logo} alt='维鹰ABA' />
-            {!collapsed && <h1>维鹰 ABA</h1>}
+            <img src={logo} alt='VGP GPU' />
+            {!collapsed && <h1>VGP GPU</h1>}
           </div>
           <div className={styles['sider-main']}>
             <Menu

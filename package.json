@@ -1,7 +1,7 @@
 {
   "name": "vite2-react",
   "version": "0.0.1",
-  "author": "yongli@yz-intelligence.com",
+  "author": "huimchien@gmail.com",
   "private": true,
   "scripts": {
     "dev": "vite --host",

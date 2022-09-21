@@ -2,14 +2,18 @@ import loadable from '@loadable/component'
 import type { LoadableComponent } from '@loadable/component'
 import React from 'react'
 import {
-  DashboardOutlined,
-  FileSearchOutlined,
+  HomeOutlined,
   ApartmentOutlined,
   AlertOutlined,
   ClusterOutlined,
   BranchesOutlined,
   SettingOutlined,
-  DeploymentUnitOutlined
+  DeploymentUnitOutlined,
+  DownloadOutlined,
+  CameraOutlined,
+  FormOutlined,
+  ThunderboltOutlined,
+  CloudOutlined
 } from '@ant-design/icons'
 export type RouteMetaProp = {
   title: string
@@ -30,7 +34,7 @@ export const asyncRoutes: RouteProp[] = [
     path: '/',
     redirect: '/dashboard',
     name: 'home',
-    meta: { title: '首页', icon: <DashboardOutlined /> },
+    meta: { title: '首页', icon: <HomeOutlined /> },
     children: [
       {
         path: 'dashboard',
@@ -45,7 +49,7 @@ export const asyncRoutes: RouteProp[] = [
     path: '/index-search/',
     redirect: '/index-search/package',
     name: 'IndexSearch',
-    meta: { title: '指标查询', icon: <FileSearchOutlined /> },
+    meta: { title: '图像编辑', icon: <FormOutlined /> },
     children: [
       {
         path: 'total-package',
@@ -89,7 +93,7 @@ export const asyncRoutes: RouteProp[] = [
     path: '/topology/',
     redirect: '/topology/business-relationship',
     name: 'Topology',
-    meta: { title: '拓扑管理', icon: <ApartmentOutlined /> },
+    meta: { title: 'GPU 设置', icon: <ThunderboltOutlined /> },
     children: [
       {
         path: 'business-relationship',
@@ -115,7 +119,7 @@ export const asyncRoutes: RouteProp[] = [
     path: '/alarm/',
     redirect: '/alarm/current-alarm',
     name: 'Alarm',
-    meta: { title: '告警管理', icon: <AlertOutlined /> },
+    meta: { title: '云端图库', icon: <CloudOutlined /> },
     children: [
       {
         path: 'current-alarm',
