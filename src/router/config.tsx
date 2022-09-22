@@ -3,14 +3,9 @@ import type { LoadableComponent } from '@loadable/component'
 import React from 'react'
 import {
   HomeOutlined,
-  ApartmentOutlined,
-  AlertOutlined,
   ClusterOutlined,
   BranchesOutlined,
   SettingOutlined,
-  DeploymentUnitOutlined,
-  DownloadOutlined,
-  CameraOutlined,
   FormOutlined,
   ThunderboltOutlined,
   CloudOutlined
@@ -30,86 +25,92 @@ export type RouteProp = {
 }
 
 export const asyncRoutes: RouteProp[] = [
+  // {
+  //   path: '/',
+  //   redirect: '/dashboard',
+  //   name: 'home',
+  //   meta: { title: '首页', icon: <HomeOutlined /> },
+  //   children: [
+  //     {
+  //       path: 'dashboard',
+  //       name: 'Dashboard',
+  //       hideMenu: true,
+  //       component: loadable(() => import('@/pages/dashboard')),
+  //       meta: { title: '首页' }
+  //     }
+  //   ]
+  // },
   {
     path: '/',
-    redirect: '/dashboard',
     name: 'home',
-    meta: { title: '首页', icon: <HomeOutlined /> },
-    children: [
-      {
-        path: 'dashboard',
-        name: 'Dashboard',
-        hideMenu: true,
-        component: loadable(() => import('@/pages/dashboard')),
-        meta: { title: 'Dashboard' }
-      }
-    ]
+    component: loadable(() => import('@/pages/dashboard')),
+    meta: { title: '首页', icon: <HomeOutlined /> }
   },
   {
-    path: '/index-search/',
-    redirect: '/index-search/package',
-    name: 'IndexSearch',
+    path: '/image-processing/',
+    redirect: '/image-processing/package',
+    name: 'ImageProcessing',
     meta: { title: '图像编辑', icon: <FormOutlined /> },
     children: [
       {
         path: 'total-package',
-        component: loadable(() => import('@/pages/IndexSearch/TotalPackage')),
+        component: loadable(() => import('@/pages/ImageProcessing/TotalPackage')),
         name: 'TotalPackage',
-        meta: { title: '总包速率' }
+        meta: { title: '图像编辑' }
       },
       {
         path: 'total-traffic',
-        component: loadable(() => import('@/pages/IndexSearch/TotalTraffic')),
+        component: loadable(() => import('@/pages/ImageProcessing/TotalTraffic')),
         name: 'TotalTraffic',
-        meta: { title: '总流量速率' }
+        meta: { title: '子页面一' }
       },
       {
         path: 'regular-stat-tcp',
-        component: loadable(() => import('@/pages/IndexSearch/RegularStatTCP')),
+        component: loadable(() => import('@/pages/ImageProcessing/RegularStatTCP')),
         name: 'RegularStatTCP',
-        meta: { title: '指标定期统计值TCP' }
+        meta: { title: '子页面2' }
       },
       {
         path: 'real-time-stat-tcp',
-        component: loadable(() => import('@/pages/IndexSearch/RealTimeStatTCP')),
+        component: loadable(() => import('@/pages/ImageProcessing/RealTimeStatTCP')),
         name: 'RealTimeStatTCP',
-        meta: { title: '指标实时统计值TCP' }
+        meta: { title: '子页面3' }
       },
       {
         path: 'real-time-value-tcp',
-        component: loadable(() => import('@/pages/IndexSearch/RealTimeValueTCP')),
+        component: loadable(() => import('@/pages/ImageProcessing/RealTimeValueTCP')),
         name: 'RealTimeValueTCP',
-        meta: { title: '指标实时值TCP' }
+        meta: { title: '子页面4' }
       },
       {
         path: 'snapshot-comparison-tcp',
-        component: loadable(() => import('@/pages/IndexSearch/SnapshotComparisonTCP')),
+        component: loadable(() => import('@/pages/ImageProcessing/SnapshotComparisonTCP')),
         name: 'SnapshotComparisonTCP',
-        meta: { title: '快照比对TCP' }
+        meta: { title: '子页面5' }
       }
     ]
   },
   {
-    path: '/topology/',
-    redirect: '/topology/business-relationship',
-    name: 'Topology',
+    path: '/gpu-setting/',
+    redirect: '/gpu-setting/business-relationship',
+    name: 'GPU Setting',
     meta: { title: 'GPU 设置', icon: <ThunderboltOutlined /> },
     children: [
       {
         path: 'business-relationship',
-        component: loadable(() => import('@/pages/topology/BusinessRelationship')),
+        component: loadable(() => import('@/pages/GPUSetting/BusinessRelationship')),
         name: 'BusinessRelationship',
         meta: { title: '业务关系' }
       },
       {
         path: 'business-config',
-        component: loadable(() => import('@/pages/topology/BusinessConfig')),
+        component: loadable(() => import('@/pages/GPUSetting/BusinessConfig')),
         name: 'BusinessConfig',
         meta: { title: '业务配置' }
       },
       {
         path: 'business-dashboard',
-        component: loadable(() => import('@/pages/topology/BusinessDashboard')),
+        component: loadable(() => import('@/pages/GPUSetting/BusinessDashboard')),
         name: 'BusinessDashboard',
         meta: { title: '业务面板' }
       }
@@ -190,20 +191,6 @@ export const asyncRoutes: RouteProp[] = [
         component: loadable(() => import('@/pages/alias/NetSegmentAliasConfig')),
         name: 'NetSegmentAliasConfig',
         meta: { title: '网段别名配置' }
-      }
-    ]
-  },
-  {
-    path: '/load-balance/',
-    redirect: '/load-balance/f5-info-config',
-    name: 'LoadBalance',
-    meta: { title: '负载均衡', icon: <DeploymentUnitOutlined /> },
-    children: [
-      {
-        path: 'f5-info-config',
-        component: loadable(() => import('@/pages/LoadBalance/F5InfoConfig')),
-        name: 'F5InfoConfig',
-        meta: { title: 'F5配置信息' }
       }
     ]
   },

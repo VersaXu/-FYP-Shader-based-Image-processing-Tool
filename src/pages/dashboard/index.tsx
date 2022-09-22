@@ -1,12 +1,15 @@
 import React from 'react'
-import { Button } from 'antd'
+import { Button, Card } from 'antd'
 import styles from './index.module.less'
+import PageContainer from '@/components/PageContainer'
 const HomePage: React.FC = () => {
   return (
-    <div className={styles['home']}>
-      <div className={styles['home-title']}>Vite2+react17+react-rouer v6 + typescript + tea</div>
-      <Button type='primary'>按一下加1S</Button>
-    </div>
+    <PageContainer showBreadcrumb={false}>
+      <Card>
+        首页
+        <h1>这里要写一个功能展示界面</h1>
+      </Card>
+    </PageContainer>
   )
 }
 export default HomePage

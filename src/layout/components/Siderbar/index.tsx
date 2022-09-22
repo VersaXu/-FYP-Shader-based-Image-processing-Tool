@@ -5,7 +5,7 @@ import { Menu, Layout } from 'antd'
 import { useNavigate, useLocation } from 'react-router-dom'
 import type { MenuProps } from 'antd'
 import styles from './index.module.less'
-import logo from '@/assets/images/logo.svg'
+import logo from '@/assets/images/logo.png'
 import { asyncRoutes } from '@/router/config'
 import type { RouteProp } from '@/router/config'
 const { Sider } = Layout
@@ -70,12 +70,12 @@ const Sidebar: React.FC<any> = props => {
   const [openKeys, setOpenKeys] = useState([currentMenu.pkey])
   const [collapsed, setCollapsed] = useState(false)
   const [current, setCurrent] = useState(currentMenu.key)
-  const [sideWidth, setSideWidth] = useState(208)
+  const [sideWidth, setSideWidth] = useState(308)
   const toggleCollapsed = () => {
     setCollapsed(!collapsed)
   }
   useEffect(() => {
-    setSideWidth(collapsed ? 48 : 208)
+    setSideWidth(collapsed ? 64 : 308)
   }, [collapsed])
 
   const onClick = (e: any) => {
@@ -104,7 +104,7 @@ const Sidebar: React.FC<any> = props => {
       />
       <Sider
         collapsible
-        collapsedWidth={48}
+        collapsedWidth={64}
         trigger={null}
         collapsed={collapsed}
         onCollapse={collapse => {
@@ -115,12 +115,12 @@ const Sidebar: React.FC<any> = props => {
       >
         <div className={`${collapsed && styles['custom-aside-cpllapsed']} ${styles['sider-wrap']}`}>
           <div className={styles['sider-logo']}>
-            <img src={logo} alt='VGP GPU' />
-            {!collapsed && <h1>VGP GPU</h1>}
+            <img src={logo} alt='VGP' />
+            {!collapsed && <h1>Versatile Graphics Processing</h1>}
           </div>
           <div className={styles['sider-main']}>
             <Menu
-              inlineIndent={16}
+              inlineIndent={24}
               mode='inline'
               items={menuItems}
               onSelect={onClick}

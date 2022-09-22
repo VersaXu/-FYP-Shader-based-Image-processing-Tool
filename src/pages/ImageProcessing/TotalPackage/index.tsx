@@ -4,7 +4,7 @@ import { Card } from 'antd'
 const TotalPackage: React.FC = () => {
   return (
     <PageContainer>
-      <Card>TotalPackage</Card>
+      <Card>这里应该生成一个canvas，然后周围有可以对此进行操作的按钮函数</Card>
     </PageContainer>
   )
 }
