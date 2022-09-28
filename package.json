@@ -23,6 +23,7 @@
     "@types/loadable__component": "^5.13.4",
     "ahooks": "^3.3.8",
     "antd": "^4.21.0",
+    "antd-img-crop": "^4.2.4",
     "axios": "^0.24.0",
     "less": "^4.1.2",
     "lodash": "^4.17.21",
