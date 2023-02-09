@@ -4,11 +4,11 @@ import styles from './index.module.less'
 import PageContainer from '@/components/PageContainer'
 
 const contentStyle = {
-  height: '160px',
+  height: '360px',
   color: '#fff',
   lineHeight: '160px',
   textAlign: 'center',
-  background: '#364d79'
+  background: '#164d79'
 }
 
 const HomePage: React.FC = () => {

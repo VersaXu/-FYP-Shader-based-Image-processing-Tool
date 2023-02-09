@@ -66,7 +66,7 @@ const useMenu = () => {
     const routes: BreadcrumbRoute[] = [
       {
         path: '/',
-        breadcrumbName: '首页'
+        breadcrumbName: 'Home'
       }
     ]
     const stack = [...menuItems]

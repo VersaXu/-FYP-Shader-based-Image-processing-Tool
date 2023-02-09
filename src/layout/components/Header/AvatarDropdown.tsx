@@ -10,7 +10,7 @@ export type GlobalHeaderRightProps = {
 
 const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   const [currentUser, setCurrentUser] = useState({
-    name: '测试',
+    name: 'Test Account',
     avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
     userid: '00000001'
   })
@@ -23,14 +23,14 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
       {menu && (
         <Menu.Item key='center'>
           <UserOutlined />
-          个人中心
+          Account Center
         </Menu.Item>
       )}
       {menu && <Menu.Divider />}
 
       <Menu.Item key='logout'>
         <LogoutOutlined />
-        退出登录
+        Sign out
       </Menu.Item>
     </Menu>
   )

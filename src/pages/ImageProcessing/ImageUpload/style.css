@@ -1,0 +1,21 @@
+body{
+    display: block;
+    padding: 0;
+    margin: 0;
+    background-color: rgb(163, 162, 162);
+}
+
+/* stylelint-disable-next-line selector-id-pattern */
+#sourceImg, #resultImg{
+    background-color: #777;
+}
+img{
+    width: 100%;
+    height: auto;
+}
+
+canvas{
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}

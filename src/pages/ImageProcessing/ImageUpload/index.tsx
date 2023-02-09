@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PageContainer from '@/components/PageContainer'
+import styles from './index.module.less'
+import './style.css'
 import { InboxOutlined, UploadOutlined } from '@ant-design/icons'
 import { Button, Card, message, Upload } from 'antd'
 
@@ -33,6 +35,20 @@ const props = {
 }
 
 const TotalPackage: React.FC = () => {
+  // 引入外部main.js
+  const initScript = () => {
+    const script = document.createElement('script')
+    script.type = 'text/javascript'
+    script.async = true
+    script.src = './TotalPackage/main.js' // 不起作用？？？
+    document.body.appendChild(script)
+    console.log('TEST', script.src)
+  }
+
+  useEffect(() => {
+    initScript()
+  }, [])
+
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
       uid: '-1',
@@ -65,7 +81,7 @@ const TotalPackage: React.FC = () => {
       <Card>
         <Card>
           {' '}
-          <Dragger {...props}>
+          {/* <Dragger {...props}>
             <p className='ant-upload-drag-icon'>
               <InboxOutlined />
             </p>
@@ -73,15 +89,23 @@ const TotalPackage: React.FC = () => {
             <p className='ant-upload-hint'>
               Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files
             </p>
-          </Dragger>
+          </Dragger> */}
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
           <br />
           <br />
           <Upload action='https://www.mocky.io/v2/5cc8019d300000980a055e76' listType='picture' maxCount={1}>
             <Button icon={<UploadOutlined />}>Upload (Max: 1)</Button>
           </Upload>
-          <br />
-          <br />
-          <ImgCrop rotate>
+          {/* <ImgCrop rotate>
             <Upload
               action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
               listType='picture-card'
@@ -92,6 +116,15 @@ const TotalPackage: React.FC = () => {
               {fileList.length < 5 && '+ Upload'}
             </Upload>
           </ImgCrop>
+          <br />
+          <br />
+          <div>
+            <canvas id='sourceImg' className='column'></canvas>
+            <canvas id='resultImg' className='column'></canvas>
+          </div>
+          <div>
+            <input type='file' id='imgFile' />
+          </div> */}
         </Card>
       </Card>
     </PageContainer>

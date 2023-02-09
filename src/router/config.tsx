@@ -29,14 +29,14 @@ export const asyncRoutes: RouteProp[] = [
   //   path: '/',
   //   redirect: '/dashboard',
   //   name: 'home',
-  //   meta: { title: '首页', icon: <HomeOutlined /> },
+  //   meta: { title: 'home', icon: <HomeOutlined /> },
   //   children: [
   //     {
   //       path: 'dashboard',
   //       name: 'Dashboard',
   //       hideMenu: true,
   //       component: loadable(() => import('@/pages/dashboard')),
-  //       meta: { title: '首页' }
+  //       meta: { title: 'home' }
   //     }
   //   ]
   // },
@@ -44,49 +44,49 @@ export const asyncRoutes: RouteProp[] = [
     path: '/',
     name: 'home',
     component: loadable(() => import('@/pages/dashboard')),
-    meta: { title: '首页', icon: <HomeOutlined /> }
+    meta: { title: 'Home Page', icon: <HomeOutlined /> }
   },
   {
     path: '/image-processing/',
     redirect: '/image-processing/package',
     name: 'ImageProcessing',
-    meta: { title: '图像编辑', icon: <FormOutlined /> },
+    meta: { title: 'Image Processing', icon: <FormOutlined /> },
     children: [
       {
-        path: 'total-package',
-        component: loadable(() => import('@/pages/ImageProcessing/TotalPackage')),
-        name: 'TotalPackage',
-        meta: { title: '图像编辑' }
+        path: 'image-upload',
+        component: loadable(() => import('@/pages/ImageProcessing/ImageUpload')),
+        name: 'ImageUpload',
+        meta: { title: 'Image Processing' }
       },
       {
         path: 'total-traffic',
         component: loadable(() => import('@/pages/ImageProcessing/TotalTraffic')),
         name: 'TotalTraffic',
-        meta: { title: '子页面一' }
+        meta: { title: 'Sample Page' }
       },
       {
         path: 'regular-stat-tcp',
         component: loadable(() => import('@/pages/ImageProcessing/RegularStatTCP')),
         name: 'RegularStatTCP',
-        meta: { title: '子页面2' }
+        meta: { title: 'Sample Page' }
       },
       {
         path: 'real-time-stat-tcp',
         component: loadable(() => import('@/pages/ImageProcessing/RealTimeStatTCP')),
         name: 'RealTimeStatTCP',
-        meta: { title: '子页面3' }
+        meta: { title: 'Sample Page' }
       },
       {
         path: 'real-time-value-tcp',
         component: loadable(() => import('@/pages/ImageProcessing/RealTimeValueTCP')),
         name: 'RealTimeValueTCP',
-        meta: { title: '子页面4' }
+        meta: { title: 'Sample Page' }
       },
       {
         path: 'snapshot-comparison-tcp',
         component: loadable(() => import('@/pages/ImageProcessing/SnapshotComparisonTCP')),
         name: 'SnapshotComparisonTCP',
-        meta: { title: '子页面5' }
+        meta: { title: 'Sample Page' }
       }
     ]
   },
@@ -94,7 +94,7 @@ export const asyncRoutes: RouteProp[] = [
     path: '/gpu-setting/',
     redirect: '/gpu-setting/business-relationship',
     name: 'GPU Setting',
-    meta: { title: 'GPU 设置', icon: <ThunderboltOutlined /> },
+    meta: { title: 'GPU Setting', icon: <ThunderboltOutlined /> },
     children: [
       {
         path: 'business-relationship',
@@ -120,7 +120,7 @@ export const asyncRoutes: RouteProp[] = [
     path: '/alarm/',
     redirect: '/alarm/current-alarm',
     name: 'Alarm',
-    meta: { title: '云端图库', icon: <CloudOutlined /> },
+    meta: { title: 'Cloud Image Set', icon: <CloudOutlined /> },
     children: [
       {
         path: 'current-alarm',
@@ -152,7 +152,7 @@ export const asyncRoutes: RouteProp[] = [
     path: '/cluster-grouping/',
     redirect: '/cluster-grouping/cluster-config',
     name: 'ClusterGrouping',
-    meta: { title: '集群配置', icon: <ClusterOutlined /> },
+    meta: { title: 'System Comfiguration', icon: <ClusterOutlined /> },
     children: [
       {
         path: 'grouping-config',
@@ -178,7 +178,7 @@ export const asyncRoutes: RouteProp[] = [
     path: '/alias/',
     redirect: '/alias/alias-config',
     name: 'Alias',
-    meta: { title: '别名管理', icon: <BranchesOutlined /> },
+    meta: { title: 'Fork Management', icon: <BranchesOutlined /> },
     children: [
       {
         path: 'alias-config',
@@ -198,7 +198,7 @@ export const asyncRoutes: RouteProp[] = [
     path: '/system-info/',
     redirect: '/system-info/version',
     name: 'SystemInfo',
-    meta: { title: '系统信息', icon: <SettingOutlined /> },
+    meta: { title: 'System Information', icon: <SettingOutlined /> },
     children: [
       {
         path: 'version',
