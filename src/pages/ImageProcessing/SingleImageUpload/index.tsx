@@ -34,13 +34,13 @@ const props = {
   }
 }
 
-const TotalPackage: React.FC = () => {
+const SingleImageUpload: React.FC = () => {
   // 引入外部main.js
   const initScript = () => {
     const script = document.createElement('script')
     script.type = 'text/javascript'
     script.async = true
-    script.src = './TotalPackage/main.js' // 不起作用？？？
+    script.src = './ImageProcessing/main.js' // 不起作用？？？
     document.body.appendChild(script)
     console.log('TEST', script.src)
   }
@@ -81,7 +81,7 @@ const TotalPackage: React.FC = () => {
       <Card>
         <Card>
           {' '}
-          {/* <Dragger {...props}>
+          <Dragger {...props}>
             <p className='ant-upload-drag-icon'>
               <InboxOutlined />
             </p>
@@ -89,7 +89,7 @@ const TotalPackage: React.FC = () => {
             <p className='ant-upload-hint'>
               Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files
             </p>
-          </Dragger> */}
+          </Dragger>
           <br />
           <br />
           <br />
@@ -131,4 +131,4 @@ const TotalPackage: React.FC = () => {
   )
 }
 
-export default TotalPackage
+export default SingleImageUpload

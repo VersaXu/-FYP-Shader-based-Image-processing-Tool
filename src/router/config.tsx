@@ -43,50 +43,32 @@ export const asyncRoutes: RouteProp[] = [
   {
     path: '/',
     name: 'home',
-    component: loadable(() => import('@/pages/dashboard')),
+    component: loadable(() => import('@/pages/HomePage')),
     meta: { title: 'Home Page', icon: <HomeOutlined /> }
   },
   {
     path: '/image-processing/',
-    redirect: '/image-processing/package',
-    name: 'ImageProcessing',
+    redirect: '/image-processing/single-image-upload',
+    name: 'Image Processing',
     meta: { title: 'Image Processing', icon: <FormOutlined /> },
     children: [
       {
-        path: 'image-upload',
-        component: loadable(() => import('@/pages/ImageProcessing/ImageUpload')),
-        name: 'ImageUpload',
-        meta: { title: 'Image Processing' }
+        path: 'single-image-upload',
+        component: loadable(() => import('@/pages/ImageProcessing/SingleImageUpload')),
+        name: 'SingleImageUpload',
+        meta: { title: 'Single Image Upload' }
       },
       {
-        path: 'total-traffic',
-        component: loadable(() => import('@/pages/ImageProcessing/TotalTraffic')),
-        name: 'TotalTraffic',
-        meta: { title: 'Sample Page' }
+        path: 'multiple-images-upload',
+        component: loadable(() => import('@/pages/ImageProcessing/MultipleImagesUpload')),
+        name: 'MultipleImagesUpload',
+        meta: { title: 'Multiple Images Upload' }
       },
       {
-        path: 'regular-stat-tcp',
-        component: loadable(() => import('@/pages/ImageProcessing/RegularStatTCP')),
-        name: 'RegularStatTCP',
-        meta: { title: 'Sample Page' }
-      },
-      {
-        path: 'real-time-stat-tcp',
-        component: loadable(() => import('@/pages/ImageProcessing/RealTimeStatTCP')),
-        name: 'RealTimeStatTCP',
-        meta: { title: 'Sample Page' }
-      },
-      {
-        path: 'real-time-value-tcp',
-        component: loadable(() => import('@/pages/ImageProcessing/RealTimeValueTCP')),
-        name: 'RealTimeValueTCP',
-        meta: { title: 'Sample Page' }
-      },
-      {
-        path: 'snapshot-comparison-tcp',
-        component: loadable(() => import('@/pages/ImageProcessing/SnapshotComparisonTCP')),
-        name: 'SnapshotComparisonTCP',
-        meta: { title: 'Sample Page' }
+        path: 'processing-history',
+        component: loadable(() => import('@/pages/ImageProcessing/ProcessingHistory')),
+        name: 'ProcessingHistory',
+        meta: { title: 'Processing History' }
       }
     ]
   },
