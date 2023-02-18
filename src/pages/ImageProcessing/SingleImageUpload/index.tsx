@@ -81,21 +81,6 @@ const SingleImageUpload: React.FC<ImageUploaderProps> = (imageUrl, onImageUpload
     const imgWindow = window.open(src)
     imgWindow?.document.write(image.outerHTML)
   }
-  // code given by gpt
-  // const [loading, setLoading] = useState(false)
-
-  // const handleChange = async (info: any) => {
-  //   setLoading(true)
-  //   const file = info.file as RcFile
-
-  //   if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/svg+xml') {
-  //     onImageUpload(file)
-  //   } else {
-  //     message.error('只能上传 PNG、JPEG 或 SVG 格式的图片！')
-  //   }
-
-  //   setLoading(false)
-  // }
   return (
     <PageContainer>
       <Card>

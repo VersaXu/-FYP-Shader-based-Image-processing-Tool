@@ -16,7 +16,18 @@ const LayoutComp: React.FC<Iprops> = props => {
       <Siderbar />
       <Layout className={style['content-layout']}>
         <HeaderComp />
-        <Content className={style.content}>{props.Element && <props.Element />}</Content>
+        <Content className={style.content}>
+          {props.Element && <props.Element />}
+          {
+            // indicates very long content
+            Array.from({ length: 100 }, (_, index) => (
+              <React.Fragment key={index}>
+                {index % 20 === 0 && index ? 'more' : '...'}
+                <br />
+              </React.Fragment>
+            ))
+          }
+        </Content>
       </Layout>
     </Layout>
   )
