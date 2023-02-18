@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import PageContainer from '@/components/PageContainer'
-import styles from './index.module.less'
 import './style.css'
-import { InboxOutlined, UploadOutlined } from '@ant-design/icons'
+import { InboxOutlined, LoadingOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons'
 import { Button, Card, message, Upload } from 'antd'
-
-import ImgCrop from 'antd-img-crop'
+// import { RcFile } from 'antd/lib/upload'
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface'
+
+interface ImageUploaderProps {
+  imageUrl: string
+  onImageUpload: (file: RcFile) => void
+}
 
 const { Dragger } = Upload
 
+// dragger props
 const props = {
   name: 'file',
   multiple: true,
@@ -34,21 +38,22 @@ const props = {
   }
 }
 
-const SingleImageUpload: React.FC = () => {
+const SingleImageUpload: React.FC<ImageUploaderProps> = (imageUrl, onImageUpload) => {
   // 引入外部main.js
-  const initScript = () => {
-    const script = document.createElement('script')
-    script.type = 'text/javascript'
-    script.async = true
-    script.src = './ImageProcessing/main.js' // 不起作用？？？
-    document.body.appendChild(script)
-    console.log('TEST', script.src)
-  }
+  // const initScript = () => {
+  //   const script = document.createElement('script')
+  //   script.type = 'text/javascript'
+  //   script.async = true
+  //   script.src = './ImageProcessing/main.js' // 不起作用？？？
+  //   document.body.appendChild(script)
+  //   console.log('TEST', script.src)
+  // }
 
-  useEffect(() => {
-    initScript()
-  }, [])
+  // useEffect(() => {
+  //   initScript()
+  // }, [])
 
+  // antd svg dragger
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
       uid: '-1',
@@ -76,6 +81,21 @@ const SingleImageUpload: React.FC = () => {
     const imgWindow = window.open(src)
     imgWindow?.document.write(image.outerHTML)
   }
+  // code given by gpt
+  // const [loading, setLoading] = useState(false)
+
+  // const handleChange = async (info: any) => {
+  //   setLoading(true)
+  //   const file = info.file as RcFile
+
+  //   if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/svg+xml') {
+  //     onImageUpload(file)
+  //   } else {
+  //     message.error('只能上传 PNG、JPEG 或 SVG 格式的图片！')
+  //   }
+
+  //   setLoading(false)
+  // }
   return (
     <PageContainer>
       <Card>
@@ -90,41 +110,26 @@ const SingleImageUpload: React.FC = () => {
               Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files
             </p>
           </Dragger>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <Upload action='https://www.mocky.io/v2/5cc8019d300000980a055e76' listType='picture' maxCount={1}>
+          {/* <Upload action='https://www.mocky.io/v2/5cc8019d300000980a055e76' listType='picture' maxCount={1}>
             <Button icon={<UploadOutlined />}>Upload (Max: 1)</Button>
           </Upload>
-          {/* <ImgCrop rotate>
-            <Upload
-              action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
-              listType='picture-card'
-              fileList={fileList}
-              onChange={onChange}
-              onPreview={onPreview}
-            >
-              {fileList.length < 5 && '+ Upload'}
-            </Upload>
-          </ImgCrop>
-          <br />
-          <br />
-          <div>
-            <canvas id='sourceImg' className='column'></canvas>
-            <canvas id='resultImg' className='column'></canvas>
-          </div>
-          <div>
-            <input type='file' id='imgFile' />
-          </div> */}
+          <Upload
+            name='image'
+            listType='picture-card'
+            className='single-image-upload'
+            showUploadList={false}
+            beforeUpload={file => false}
+            onChange={handleChange}
+          >
+            {imageUrl ? (
+              <img src={imageUrl} alt='上传的图片' style={{ width: '100%' }} />
+            ) : (
+              <div>
+                {loading ? <LoadingOutlined /> : <PlusOutlined />}
+                <div className='ant-upload-text'>上传图片</div>
+              </div>
+            )}
+          </Upload> */}
         </Card>
       </Card>
     </PageContainer>

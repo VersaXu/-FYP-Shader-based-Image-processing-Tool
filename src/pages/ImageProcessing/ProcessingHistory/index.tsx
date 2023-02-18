@@ -48,23 +48,23 @@ const menu = (
 const ProcessingHistory: React.FC = () => {
   const columns: ColumnsType<any> = [
     {
-      title: '集群名称',
+      title: 'Process Name',
       dataIndex: 'name',
       width: 160
     },
     {
-      title: '描述',
+      title: 'description',
       dataIndex: 'comment',
       width: 300
     },
     {
-      title: '集群类型',
+      title: 'Upload Type',
       dataIndex: 'type',
       width: 140
     },
     {
-      title: '集群信息',
-      dataIndex: 'nodes',
+      title: 'Images Info',
+      dataIndex: 'images',
       width: 240,
       // 这里是去了第一个字段的ip和端口，没有渲染所有的
       render: (value: any[]) => {
@@ -77,7 +77,7 @@ const ProcessingHistory: React.FC = () => {
       }
     },
     {
-      title: '更新时间',
+      title: 'Last Update',
       dataIndex: 'updateTime',
       width: 250,
       sorter: (a, b) => {
@@ -88,7 +88,7 @@ const ProcessingHistory: React.FC = () => {
       }
     },
     {
-      title: '操作',
+      title: 'operation',
       dataIndex: 'operation',
       render: (
         _,
@@ -96,9 +96,7 @@ const ProcessingHistory: React.FC = () => {
           name: string
           comment: string
           type: string
-          nodes: any[]
-          srcNodes: any[]
-          desNodes: any[]
+          images: any[]
         }
       ) => {
         console.log('record: ', record)
