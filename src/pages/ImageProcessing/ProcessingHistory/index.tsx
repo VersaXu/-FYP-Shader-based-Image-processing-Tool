@@ -50,17 +50,17 @@ const ProcessingHistory: React.FC = () => {
     {
       title: 'Process Name',
       dataIndex: 'name',
-      width: 160
+      width: 130
     },
     {
       title: 'description',
       dataIndex: 'comment',
-      width: 300
+      width: 240
     },
     {
       title: 'Upload Type',
       dataIndex: 'type',
-      width: 140
+      width: 130
     },
     {
       title: 'Images Info',
@@ -79,7 +79,7 @@ const ProcessingHistory: React.FC = () => {
     {
       title: 'Last Update',
       dataIndex: 'updateTime',
-      width: 250,
+      width: 200,
       sorter: (a, b) => {
         console.log('object', a, b)
         const aTime = new Date(a.updateTime as string).getTime()

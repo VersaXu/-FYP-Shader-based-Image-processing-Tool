@@ -18,7 +18,7 @@ const LayoutComp: React.FC<Iprops> = props => {
         <HeaderComp />
         <Content className={style.content}>
           {props.Element && <props.Element />}
-          {
+          {/* {
             // indicates very long content
             Array.from({ length: 100 }, (_, index) => (
               <React.Fragment key={index}>
@@ -26,7 +26,7 @@ const LayoutComp: React.FC<Iprops> = props => {
                 <br />
               </React.Fragment>
             ))
-          }
+          } */}
         </Content>
       </Layout>
     </Layout>
