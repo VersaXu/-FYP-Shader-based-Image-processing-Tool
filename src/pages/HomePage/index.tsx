@@ -35,10 +35,17 @@ const HomePage: React.FC = () => {
       <Card>
         <Carousel effect='fade' autoplay autoplaySpeed={3000}>
           {banners.map((item, index) => (
-            <div key={index} className={styles['swiper-item']} style={{ backgroundImage: `url(${item.url})` }}>
-              <div>
-                <div className={styles['title']}>{item.title}</div>
-                <div className={styles['content']}>{item.content}</div>
+            <div key={index}>
+              <div
+                style={{
+                  backgroundImage: `url(${item.url})`
+                }}
+                className={styles['swiper-item']}
+              >
+                <div>
+                  <div className={styles['title']}>{item.title}</div>
+                  <div className={styles['content']}>{item.content}</div>
+                </div>
               </div>
             </div>
           ))}
