@@ -16,8 +16,15 @@ const SingleImageUpload: React.FC = () => {
       const reader = new FileReader()
       reader.onload = () => {
         setImageUrl(reader.result as string)
+        console.log('TEST url1' + reader.result)
       }
       reader.readAsDataURL(file)
+
+      console.log('TEST url2:' + reader)
+
+      message.success('Successfully upload the image')
+    } else {
+      message.error('Error')
     }
   }
 
