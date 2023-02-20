@@ -235,12 +235,7 @@ const ProcessingHistory: React.FC = () => {
     <PageContainer>
       <Alert
         className={styles['alert-message']}
-        description=' D集群说明：某些应用的Server端由多个IP:Port共同提供服务，这些IP:Port的组合视为一个D集群(Destination Cluster)，
-        配置D集群有利于提升监控告警的准确性。也支持不指定端口，由多个IP地址组成的D集群，此时将统计所有发往这组IP的请求与响应的情况。
-        由IP:Port组成的集群称为D1Cluster，由IP地址组成的D集群称为D2Cluster。
-        S集群说明：某些应用系统，被多个源IP地址访问，这些源IP可以属于不同的分支机构、或来自不同的地区，可以按一定的规则，把这些源IP进行分组聚合，
-        即为S集群（Source Cluster）。同时对这些分组指定它访问的目标IP:Port；如果这些源IP分组同时访问多个目标IP:Port，可把这些目标IP:Port配置成D集群，
-        再指定源IP分组访问该D集群。'
+        description=' place holder for the info of checking the result and history operation'
         type='warning'
         showIcon
         banner
@@ -250,14 +245,14 @@ const ProcessingHistory: React.FC = () => {
         <div className={styles['content-top']}>
           <div className={styles['button-list']}>
             {/* <NewClusterModal getData={getClusterConfigData} /> */}
-            <Button type='ghost'>导出CSV</Button>
+            <Button type='ghost'>placehoder1</Button>
             {/* <MutipleDeleteConfirm onDelete={() => handleMultipleDelete(selectedRowKeys)} selected={!hasSelected} /> */}
           </div>
           <div className={styles['topright-filter-list']}>
             <div className={styles['dropdown-btn']}>
               <Dropdown overlay={menu}>
                 <Button>
-                  集群种类
+                  placehoder 2
                   <DownOutlined style={{ float: 'right', marginTop: '5px' }} />
                 </Button>
               </Dropdown>

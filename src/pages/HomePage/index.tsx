@@ -5,6 +5,7 @@ import { getImageUrl } from '@/utils'
 import PageContainer from '@/components/PageContainer'
 
 const HomePage: React.FC = () => {
+  // 轮播图
   const banners = [
     {
       url: getImageUrl('banner.png'),
@@ -27,6 +28,29 @@ const HomePage: React.FC = () => {
       content: '1000+通过云计算专业认证的工程师，为超过3000+企业提供云计算运维服务。'
     }
   ]
+  // 流程列表
+  const processList = [
+    {
+      title: 'CMDB',
+      desc: 'IT软硬件一站式管理',
+      img: getImageUrl('pro_CMDB.png')
+    },
+    {
+      title: '天巡',
+      desc: '统一监控巡检',
+      img: getImageUrl('pro_tianxun.png')
+    },
+    {
+      title: '应用行为分析',
+      desc: '应用异常发现与根因定位',
+      img: getImageUrl('pro_app analysis.png')
+    },
+    {
+      title: '智能事件平台',
+      desc: '告警智能降噪与统计管理',
+      img: getImageUrl('pro_intelligent event platform.png')
+    }
+  ]
 
   console.log('IMAGE url', banners)
 
@@ -43,13 +67,42 @@ const HomePage: React.FC = () => {
                 className={styles['swiper-item']}
               >
                 <div>
-                  <div className={styles['title']}>{item.title}</div>
+                  <div className={styles['banner-title']}>{item.title}</div>
                   <div className={styles['content']}>{item.content}</div>
                 </div>
               </div>
             </div>
           ))}
         </Carousel>
+      </Card>
+      {/* 操作流程图展示 */}
+      <Card>
+        <h1 className={styles['title']}>一站式运维管理解决方案</h1>
+
+        <div className={styles['process-box']}>
+          {processList.map((item, index) => (
+            <section key={item.title}>
+              <div>
+                <img src={item.img} alt={item.title} />
+                <div>
+                  <h1>{item.title}</h1>
+                  <p>{item.desc}</p>
+                </div>
+              </div>
+              {/* 最后一个不渲染 */}
+              {processList.length - 1 != index ? (
+                <>
+                  <br />
+                  <div>
+                    <img className={styles['arrow']} src={getImageUrl('arrow.png')} alt='arrow' />
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+            </section>
+          ))}
+        </div>
       </Card>
     </PageContainer>
   )

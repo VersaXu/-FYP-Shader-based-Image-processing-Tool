@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react'
 import { useLocation } from 'react-router'
 import { Layout } from 'antd'
+import { GithubOutlined } from '@ant-design/icons'
 import HeaderComp from './components/Header'
 import Siderbar from './components/Siderbar'
 import style from './Layout.module.less'
-const { Content, Header } = Layout
+const { Content, Header, Footer } = Layout
 
 interface Iprops {
   Element?: any
@@ -18,6 +19,7 @@ const LayoutComp: React.FC<Iprops> = props => {
         <HeaderComp />
         <Content className={style.content}>
           {props.Element && <props.Element />}
+          {/* 留着debug overflow-initial 的layout */}
           {/* {
             // indicates very long content
             Array.from({ length: 100 }, (_, index) => (
@@ -28,6 +30,17 @@ const LayoutComp: React.FC<Iprops> = props => {
             ))
           } */}
         </Content>
+        {/* Footer 不需要在额外进行组件化管理，使用默认提供 */}
+        <Footer style={{ textAlign: 'center' }}>
+          <p>Made with ❤ by</p>
+          <p>
+            Versatile GPU Processing Tool&nbsp;
+            <a href='https://github.com/VersaXu/-FYP-Shader-based-Image-processing-Tool'>
+              <GithubOutlined />
+            </a>
+            &nbsp; ©2023 Created by Versa Xu
+          </p>
+        </Footer>
       </Layout>
     </Layout>
   )
