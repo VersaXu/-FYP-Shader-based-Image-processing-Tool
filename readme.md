@@ -146,12 +146,13 @@ Following the Ant Design specification, we developed a React UI library antd tha
 
 
 ### ✨ Features
-🌈 Enterprise-class UI designed for web applications.
-📦 A set of high-quality React components out of the box.
-🛡 Written in TypeScript with predictable static types.
-⚙️ Whole package of design resources and development tools.
-🌍 Internationalization support for dozens of languages.
-🎨 Powerful theme customization in every detail.
+
+- 🌈 Enterprise-class UI designed for web applications.
+- 📦 A set of high-quality React components out of the box.
+- 🛡 Written in TypeScript with predictable static types.
+- ⚙️ Whole package of design resources and development tools.
+- 🌍 Internationalization support for dozens of languages.
+- 🎨 Powerful theme customization in every detail.
 
 Dropped support of IE8 after antd@2.0. Dropped support of React 15 and IE9/10 after antd@4.0. Dropped support of IE after antd@5.0.
 
