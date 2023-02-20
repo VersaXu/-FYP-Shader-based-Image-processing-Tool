@@ -43,7 +43,7 @@ const MultipleImagesUpload: React.FC = () => {
       status: 'done',
       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
     },
-    // uploading
+    // uploading, with a specific percentage and a status: 'uploading'
     // {
     //   uid: '-xxx',
     //   percent: 50,
@@ -86,7 +86,7 @@ const MultipleImagesUpload: React.FC = () => {
   const uploadButton = (
     <div>
       <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
+      <div style={{ marginTop: 16 }}>Upload</div>
     </div>
   )
   return (
@@ -101,10 +101,14 @@ const MultipleImagesUpload: React.FC = () => {
               onPreview={handlePreview}
               onChange={handleChange}
             >
-              {fileList.length >= 8 ? null : uploadButton}
+              {fileList.length >= 16 ? null : uploadButton}
             </Upload>
             <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
-              <img alt='example' style={{ width: '100%' }} src={previewImage} />
+              <img
+                alt='example'
+                style={{ width: '100%', height: '100%', maxWidth: '430px', maxHeight: '460px' }}
+                src={previewImage}
+              />
             </Modal>
           </Card>
         </Card>
