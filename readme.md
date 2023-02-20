@@ -145,7 +145,7 @@ https://juejin.cn/post/6844904096059621389
 Following the Ant Design specification, we developed a React UI library antd that contains a set of high quality components and demos for building rich, interactive user interfaces.
 
 
-## ✨ Features
+### ✨ Features
 🌈 Enterprise-class UI designed for web applications.
 📦 A set of high-quality React components out of the box.
 🛡 Written in TypeScript with predictable static types.
@@ -155,7 +155,7 @@ Following the Ant Design specification, we developed a React UI library antd tha
 
 Dropped support of IE8 after antd@2.0. Dropped support of React 15 and IE9/10 after antd@4.0. Dropped support of IE after antd@5.0.
 
-## Version
+### Version
 Stable: npm package
 You can subscribe to this feed for new version notifications: https://github.com/ant-design/ant-design/releases.atom
 
