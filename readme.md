@@ -90,7 +90,7 @@ npm run release
 git push origin --tags
 ```
 
-前缀规范如下：
+### 前缀规范如下：
 
 - feat: 新功能（feature）
 - fix: 修补 bug
@@ -140,6 +140,25 @@ https://reactrouter.com/docs/en/v6
 https://juejin.cn/post/7025418839454122015
 
 https://juejin.cn/post/6844904096059621389
+
+### Ant Design of React
+Following the Ant Design specification, we developed a React UI library antd that contains a set of high quality components and demos for building rich, interactive user interfaces.
+
+
+### ✨ Features
+
+- 🌈 Enterprise-class UI designed for web applications.
+- 📦 A set of high-quality React components out of the box.
+- 🛡 Written in TypeScript with predictable static types.
+- ⚙️ Whole package of design resources and development tools.
+- 🌍 Internationalization support for dozens of languages.
+- 🎨 Powerful theme customization in every detail.
+
+Dropped support of IE8 after antd@2.0. Dropped support of React 15 and IE9/10 after antd@4.0. Dropped support of IE after antd@5.0.
+
+### Version
+Stable: npm package
+You can subscribe to this feed for new version notifications: https://github.com/ant-design/ant-design/releases.atom
 
 **tea-component:**
 
