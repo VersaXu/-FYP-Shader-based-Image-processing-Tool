@@ -65,6 +65,12 @@ export const asyncRoutes: RouteProp[] = [
         meta: { title: 'Multiple Images Upload' }
       },
       {
+        path: 'image-set-upload',
+        component: loadable(() => import('@/pages/ImageProcessing/ImageSetUpload')),
+        name: 'ImageSetUpload',
+        meta: { title: 'Image Set Upload' }
+      },
+      {
         path: 'processing-history',
         component: loadable(() => import('@/pages/ImageProcessing/ProcessingHistory')),
         name: 'ProcessingHistory',

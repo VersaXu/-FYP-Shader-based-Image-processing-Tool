@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import { PlusOutlined, UploadOutlined } from '@ant-design/icons'
-import { Modal, Upload, Card, Button, message } from 'antd'
+import React, { Fragment, useState } from 'react'
+import { DownOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons'
+import { Modal, Upload, Card, Button, message, Dropdown, Typography, Space, MenuProps, Menu } from 'antd'
 import type { RcFile, UploadProps } from 'antd/es/upload'
 import type { UploadFile } from 'antd/es/upload/interface'
 import PageContainer from '@/components/PageContainer'
@@ -26,18 +26,6 @@ const MultipleImagesUpload: React.FC = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
       uid: '-1',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-    },
-    {
-      uid: '-2',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-    },
-    {
-      uid: '-3',
       name: 'image.png',
       status: 'done',
       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
@@ -69,7 +57,25 @@ const MultipleImagesUpload: React.FC = () => {
       url: getImageUrl('banner.png')
     }
   ])
-  const [dirList, setDirList] = useState<UploadFile[]>([])
+
+  // 算法列表选择
+  // const items: any[] = [
+  //   {
+  //     key: 1,
+  //     label: 'Item 1',
+  //     handleClick: () => {
+  //       // Function to invoke when Item 1 is clicked
+  //     }
+  //   },
+  //   {
+  //     id: 2,
+  //     label: 'Item 2',
+  //     handleClick: () => {
+  //       // Function to invoke when Item 2 is clicked
+  //     }
+  //   }
+  //   // Add additional items as needed
+  // ]
 
   const handleCancel = () => setPreviewOpen(false)
   // 展示图片
@@ -99,18 +105,11 @@ const MultipleImagesUpload: React.FC = () => {
   const uploadButton = (
     <div>
       <PlusOutlined />
-      <div style={{ marginTop: 16 }}>Upload</div>
+      <div style={{ marginTop: 24 }}>Upload</div>
     </div>
   )
 
   // big size directory or multiple image set upload, to limit the format of the images from the chosen directory
-  // const beforeUpload = (file: File) => {
-  //   const isImage = file.type.split('/')[0] === 'image'
-  //   if (!isImage) {
-  //     message.error('You can only upload image files!')
-  //   }
-  //   return isImage
-  // }
   // 自己手写完成上传函数
   const handleImageUpload = (file: any) => {
     if (imageExtensions.includes(file.name.slice(-4))) {
@@ -131,33 +130,14 @@ const MultipleImagesUpload: React.FC = () => {
       message.error('Error')
     }
   }
+  // 下拉列表列表选择存储
+  const [selectedKey, setSelectedKey] = useState('1')
 
-  // 文件上传函数
-  const handleDirectoryUpload = (event: any) => {
-    const directory = event.target.files[0]
+  const handleMenuClick = (e: { key: React.SetStateAction<string> }) => {
+    console.log(e.key)
 
-    fs.readdir(directory.path, (err, files) => {
-      if (err) {
-        console.error(err)
-      } else {
-        const newDirList: any[] = [...dirList]
-
-        files.forEach((file, index) => {
-          const dirFileUrl = `${directory.path}/${file}`
-          console.log('test dir url' + dirFileUrl)
-
-          newDirList.push({
-            uid: index,
-            name: file,
-            status: 'done',
-            url: dirFileUrl
-          })
-        })
-
-        setDirList(newDirList)
-        console.log('TEST DIR:' + dirList.values)
-      }
-    })
+    setSelectedKey(e.key)
+    console.log('Selected Successfully! The previous selected key is: ' + selectedKey)
   }
 
   return (
@@ -187,13 +167,37 @@ const MultipleImagesUpload: React.FC = () => {
                 src={previewImage}
               />
             </Modal>
-          </Card>
-          <Card>
-            <h1>Upload Image Set</h1>
             <br />
-            <Upload directory onChange={handleDirectoryUpload}>
-              <Button icon={<UploadOutlined />}>Upload Directory</Button>
-            </Upload>
+            <br />
+            {/* 下拉列表选择算法 */}
+            <Dropdown
+              overlay={
+                <Menu onClick={handleMenuClick} itemID={selectedKey} selectable>
+                  <Menu.Item
+                    key='1'
+                    // onClick={handleClick}
+                  >
+                    Item 1
+                  </Menu.Item>
+                  <Menu.Item
+                    key='2'
+                    // onClick={handleClick}
+                  >
+                    Item 2
+                  </Menu.Item>
+                  <Menu.Item
+                    key='3'
+                    // onClick={handleClick}
+                  >
+                    Item 3
+                  </Menu.Item>
+                </Menu>
+              }
+            >
+              <Typography.Link>
+                Hover me to select algorithm <DownOutlined />
+              </Typography.Link>
+            </Dropdown>
           </Card>
         </Card>
       </PageContainer>
