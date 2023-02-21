@@ -117,7 +117,7 @@ const MultipleImagesUpload: React.FC = () => {
       reader.addEventListener('load', () => {
         const newFileList = [...fileList]
         newFileList.push({
-          uid: Date.now(),
+          uid: Date.now().toString(),
           name: file.name,
           status: 'done',
           url: reader.result as string
