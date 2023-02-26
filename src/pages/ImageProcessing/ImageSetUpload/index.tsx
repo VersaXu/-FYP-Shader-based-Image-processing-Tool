@@ -5,7 +5,6 @@ import type { RcFile, UploadProps } from 'antd/es/upload'
 import type { UploadFile } from 'antd/es/upload/interface'
 import PageContainer from '@/components/PageContainer'
 import fs from 'fs'
-import { getImageUrl } from '@/utils'
 
 const ImageSetUpload: React.FC = () => {
   // const imageExtensions = ['.png', '.jpg', '.jpeg', '.svg']

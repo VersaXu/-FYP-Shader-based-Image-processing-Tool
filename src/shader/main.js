@@ -14,6 +14,7 @@ import { noFilter } from '../../../utils/shaderFilter'
 const imgContainer = document.getElementById('sourceImg')
 const ctx = imgContainer.getContext('2d')
 const image = new Image()
+// 这个地方应该使用react state hooks 来取代
 image.src = '../../../assets/images/logo.png'
 
 // get WebGL canvas context
@@ -44,10 +45,11 @@ image.onload = function () {
 
   /*  WebGL canvas context  */
 
-  // create shader from source
+  // create shader from source SOURCE!!
   const vertexShader = createShader(gl, gl.VERTEX_SHADER, noFilter.vs)
   const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, noFilter.fs)
-  // create shading program
+
+  // create shading program PROGRAM!!
   const program = createProgram(gl, vertexShader, fragmentShader)
   gl.useProgram(program)
 
@@ -85,7 +87,7 @@ image.onload = function () {
   getAttrib(gl, program, 'a_position', positionBuffer, Layout)
   getAttrib(gl, program, 'a_texCoord', texcoordBuffer, Layout)
 
-  // get uniform
+  // get uniform UNIFORM!!!
   const resolutionLocation = gl.getUniformLocation(program, 'u_resolution')
   gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height)
 

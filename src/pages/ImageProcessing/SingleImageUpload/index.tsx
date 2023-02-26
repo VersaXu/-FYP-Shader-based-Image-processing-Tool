@@ -8,9 +8,11 @@ import { RcFile } from 'antd/lib/upload/interface'
 const { Dragger } = Upload
 
 const SingleImageUpload: React.FC = () => {
+  // 原图片url
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const imageExtensions = ['.png', '.jpg', '.jpeg', '.svg']
 
+  // 上床图片；及其规范
   const handleImageUpload = (file: RcFile) => {
     if (imageExtensions.includes(file.name.slice(-4))) {
       const reader = new FileReader()

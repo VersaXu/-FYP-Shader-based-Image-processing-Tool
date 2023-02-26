@@ -17,18 +17,8 @@ const LayoutComp: React.FC<Iprops> = props => {
       <Siderbar />
       <Layout className={style['content-layout']}>
         <HeaderComp />
-        <Content className={style.content}>
+        <Content className={style.content} style={{ overflow: 'initial' }}>
           {props.Element && <props.Element />}
-          {/* 留着debug overflow-initial 的layout */}
-          {/* {
-            // indicates very long content
-            Array.from({ length: 100 }, (_, index) => (
-              <React.Fragment key={index}>
-                {index % 20 === 0 && index ? 'more' : '...'}
-                <br />
-              </React.Fragment>
-            ))
-          } */}
         </Content>
         {/* Footer 不需要在额外进行组件化管理，使用默认提供 */}
         <Footer style={{ textAlign: 'center' }}>

@@ -58,25 +58,6 @@ const MultipleImagesUpload: React.FC = () => {
     }
   ])
 
-  // 算法列表选择
-  // const items: any[] = [
-  //   {
-  //     key: 1,
-  //     label: 'Item 1',
-  //     handleClick: () => {
-  //       // Function to invoke when Item 1 is clicked
-  //     }
-  //   },
-  //   {
-  //     id: 2,
-  //     label: 'Item 2',
-  //     handleClick: () => {
-  //       // Function to invoke when Item 2 is clicked
-  //     }
-  //   }
-  //   // Add additional items as needed
-  // ]
-
   const handleCancel = () => setPreviewOpen(false)
   // 展示图片
   const handlePreview = async (file: UploadFile) => {
@@ -109,7 +90,7 @@ const MultipleImagesUpload: React.FC = () => {
     </div>
   )
 
-  // big size directory or multiple image set upload, to limit the format of the images from the chosen directory
+  // big size directory to limit the format of the images from the chosen directory
   // 自己手写完成上传函数
   const handleImageUpload = (file: any) => {
     if (imageExtensions.includes(file.name.slice(-4))) {
@@ -148,7 +129,6 @@ const MultipleImagesUpload: React.FC = () => {
             <h1>Upload Images One by One</h1>
             <br />
             <Upload
-              // accept='.png,.jpg,.jpeg,.svg'
               listType='picture-card'
               fileList={fileList}
               onPreview={handlePreview}

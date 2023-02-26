@@ -40,7 +40,6 @@ export const noFilter = {
         uniform sampler2D u_image;
         varying vec2 v_texCoord;
         void main(){
-            // 在这里进行计算
             gl_FragColor = texture2D(u_image, v_texCoord);
     }`
 }

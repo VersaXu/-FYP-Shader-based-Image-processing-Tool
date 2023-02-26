@@ -55,17 +55,17 @@ const ProcessingHistory: React.FC = () => {
     {
       title: 'description',
       dataIndex: 'comment',
-      width: 240
+      width: 200
     },
     {
       title: 'Upload Type',
       dataIndex: 'type',
-      width: 130
+      width: 110
     },
     {
       title: 'Images Info',
       dataIndex: 'images',
-      width: 240,
+      width: 220,
       // 这里是去了第一个字段的ip和端口，没有渲染所有的
       render: (value: any[]) => {
         let res = ''
