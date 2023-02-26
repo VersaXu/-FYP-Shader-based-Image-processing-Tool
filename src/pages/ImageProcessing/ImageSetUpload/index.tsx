@@ -7,16 +7,8 @@ import PageContainer from '@/components/PageContainer'
 import fs from 'fs'
 import { getImageUrl } from '@/utils'
 
-const getBase64 = (file: RcFile): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = error => reject(error)
-  })
-
 const ImageSetUpload: React.FC = () => {
-  const imageExtensions = ['.png', '.jpg', '.jpeg', '.svg']
+  // const imageExtensions = ['.png', '.jpg', '.jpeg', '.svg']
   const [dirList, setDirList] = useState<UploadFile[]>([])
 
   // big size directory or multiple image set upload, to limit the format of the images from the chosen directory
