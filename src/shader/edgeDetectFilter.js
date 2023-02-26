@@ -7,11 +7,11 @@
 
 /**
  * The image filters that use WebGL shader implement.
- * @module shaderFilter
+ * @module edgeDetectFilter
  */
 
 /**
- * This filter just draw a origen image again and do nothing.
+ * This filter detect the edges of the image.
  * @constant
  * @type {object}
  */
@@ -53,5 +53,5 @@ export const edgeDetectFilter = {
         }
         color.a = 1.0;
         gl_FragColor = color;
-}`
+        }`
 }

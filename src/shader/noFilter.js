@@ -7,7 +7,7 @@
 
 /**
  * The image filters that use WebGL shader implement.
- * @module shaderFilter
+ * @module noFilter
  */
 
 /**
@@ -39,6 +39,7 @@ export const noFilter = {
     
         uniform sampler2D u_image;
         varying vec2 v_texCoord;
+        
         void main(){
             gl_FragColor = texture2D(u_image, v_texCoord);
     }`
