@@ -5,6 +5,7 @@ import { InboxOutlined } from '@ant-design/icons'
 import { Card, Upload, message } from 'antd'
 import { RcFile } from 'antd/lib/upload/interface'
 
+// 老师提供的例子
 // import {
 //   createProgram,
 //   createShader,
@@ -13,15 +14,17 @@ import { RcFile } from 'antd/lib/upload/interface'
 //   set2DTexture,
 //   getAttrib
 // } from '../../../shader/shaderUtil'
-import { gaussinFilter } from '../../../shader/gaussinFilter'
+import { createShader, createProgram } from '../../../shader/utils'
+
+import { noFilter, edgeDetectFilter, gaussinFilter } from '../../../shader/filters'
 
 const { Dragger } = Upload
 
-interface ShaderDisplayProps {
+interface Props {
   imageUrl: string
 }
 
-const SingleImageUpload: React.FC<ShaderDisplayProps> = () => {
+const SingleImageUpload: React.FC<Props> = () => {
   // 原图片url
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const imageExtensions = ['.png', '.jpg', '.jpeg', '.svg']
@@ -47,55 +50,6 @@ const SingleImageUpload: React.FC<ShaderDisplayProps> = () => {
   // shader invoke
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  function createShader(gl: WebGLRenderingContext, type: GLenum, shaderSource: string): WebGLShader | null {
-    const shader = gl.createShader(type)
-    if (!shader) return null
-
-    gl.shaderSource(shader, shaderSource)
-    gl.compileShader(shader)
-
-    const success = gl.getShaderParameter(shader, gl.COMPILE_STATUS)
-    if (!success) {
-      console.warn(gl.getShaderInfoLog(shader))
-      gl.deleteShader(shader)
-      return null
-    }
-
-    return shader
-  }
-
-  function createProgram(
-    gl: WebGLRenderingContext,
-    vertexShader: WebGLShader,
-    fragmentShader: WebGLShader
-  ): WebGLProgram | null {
-    const program = gl.createProgram()
-    if (!program) return null
-
-    gl.attachShader(program, vertexShader)
-    gl.attachShader(program, fragmentShader)
-    gl.linkProgram(program)
-
-    const success = gl.getProgramParameter(program, gl.LINK_STATUS)
-    if (!success) {
-      console.log(gl.getProgramInfoLog(program))
-      gl.deleteProgram(program)
-      return null
-    }
-
-    return program
-  }
-
-  function handleLoadedTexture(gl: WebGLRenderingContext, texture: WebGLTexture) {
-    gl.bindTexture(gl.TEXTURE_2D, texture)
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST)
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image)
-    gl.drawArrays(gl.TRIANGLES, 0, 6)
-  }
-
   useEffect(() => {
     if (canvasRef.current) {
       const gl = canvasRef.current.getContext('webgl')
@@ -104,21 +58,23 @@ const SingleImageUpload: React.FC<ShaderDisplayProps> = () => {
         return
       }
 
-      const canvasWidthHeight = 60
       gl.clearColor(1, 1, 1, 1)
       gl.clear(gl.COLOR_BUFFER_BIT)
 
-      const vertexShaderSource = gaussinFilter.vs
+      // 在这林选择使用哪一个filter
+      const vertexShaderSource = noFilter.vs
 
-      const fragmentShaderSource = gaussinFilter.fs
+      const fragmentShaderSource = noFilter.fs
 
       const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource)
       const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource)
 
+      // 创建shader program, 目的是连接两个shader的作用。
       const program = createProgram(gl, vertexShader, fragmentShader)
       const positionAttributeLocation = gl.getAttribLocation(program, 'position')
       const colorUniformLocation = gl.getUniformLocation(program, 'color')
 
+      // 创建buffer
       const positionBuffer = gl.createBuffer()
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
 
@@ -131,13 +87,15 @@ const SingleImageUpload: React.FC<ShaderDisplayProps> = () => {
 
       // The ! after gl.createTexture() tells TypeScript that you are certain that
       // the return value will not be null.
+
+      // 创建 texture
       const texture = gl.createTexture() as WebGLTexture & { image: HTMLImageElement }
       texture.image = new Image()
       texture.image.onload = function () {
         handleLoadedTexture(gl, texture)
       }
       texture.image.crossOrigin = ''
-      texture.image.src = imageUrl
+      texture.image.src = imageUrl!
 
       function handleLoadedTexture(gl: WebGLRenderingContext, texture: WebGLTexture, callback?: () => void) {
         gl.bindTexture(gl.TEXTURE_2D, texture)
