@@ -28,6 +28,8 @@ const SingleImageUpload: React.FC<Props> = () => {
   // 原图片url
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const imageExtensions = ['.png', '.jpg', '.jpeg', '.svg']
+  // 结果图片
+  const [resultUrl, setResultUrl] = useState<string | null>(null)
 
   // 上传图片；及其规范
   const handleImageUpload = (file: RcFile) => {
@@ -71,7 +73,14 @@ const SingleImageUpload: React.FC<Props> = () => {
   const [currentFilter, setCurrentFilter] = useState<filter>(noFilter)
 
   useEffect(() => {
-    // 以下是所有的shader算法操作，在点击button时实现
+    // 检查 localStorage 中是否存在存储的数据
+    const data = JSON.parse(localStorage.getItem('imageProcess'))
+    if (data) {
+      setImageUrl(data.originImage)
+      setResultUrl(data.resultImage)
+    }
+
+    // 以下是所有的shader算法操作，应该在点击button时实现
     if (canvasRef.current) {
       const gl = canvasRef.current.getContext('webgl')
       if (!gl) {
@@ -128,7 +137,25 @@ const SingleImageUpload: React.FC<Props> = () => {
         gl.drawArrays(gl.TRIANGLES, 0, 6)
       }
     }
-  }, [])
+  }, [currentFilter])
+
+  // handle save
+  const handleSave = () => {
+    if (resultUrl) {
+      const data = {
+        id: new Date().getTime(),
+        type: 'single image',
+        originImage: imageUrl,
+        resultImage: resultUrl,
+        timestamp: new Date().toISOString()
+      }
+      // 存储数据到 localStorage
+      localStorage.setItem('imageProcess', JSON.stringify(data))
+      message.success('Successfuyl!')
+    } else {
+      message.error('No Result imagme here!')
+    }
+  }
 
   return (
     <PageContainer>
@@ -192,9 +219,7 @@ const SingleImageUpload: React.FC<Props> = () => {
               <Menu.Item key='4' onClick={() => setCurrentFilter(edgeDetectFilter)}>
                 {filterMap.get('4')}
               </Menu.Item>
-              <Menu.Item key='5' onClick={() => setCurrentFilter()}>
-                {filterMap.get('5')}
-              </Menu.Item>
+              <Menu.Item key='5'>{filterMap.get('5')}</Menu.Item>
             </Menu>
           }
         >
@@ -202,9 +227,12 @@ const SingleImageUpload: React.FC<Props> = () => {
             Hover me to select algorithm <DownOutlined />
           </Typography.Link>
         </Dropdown>
-        <Button style={{ float: 'right', marginLeft: '5px' }}>Save</Button>
-        <Button type='primary' style={{ float: 'right' }}>
-          Apply
+        <Button style={{ float: 'right', marginLeft: '5px' }}>Download</Button>
+        <Button type='primary' style={{ float: 'right', marginLeft: '5px' }} onClick={handleSave}>
+          Save
+        </Button>
+        <Button type='primary' danger style={{ float: 'right' }} onClick={() => setImageUrl(null)}>
+          Cancel
         </Button>
       </Card>
     </PageContainer>
