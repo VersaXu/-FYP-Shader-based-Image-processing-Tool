@@ -28,6 +28,8 @@ export function createProgram(
   const program = gl.createProgram()
   if (!program) return null
 
+  console.log(vertexShader, fragmentShader) // Debugging line
+
   gl.attachShader(program, vertexShader)
   gl.attachShader(program, fragmentShader)
   gl.linkProgram(program)

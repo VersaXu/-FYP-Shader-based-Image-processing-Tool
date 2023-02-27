@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import PageContainer from '@/components/PageContainer'
 import styles from './index.module.less'
-import { InboxOutlined } from '@ant-design/icons'
-import { Card, Upload, message } from 'antd'
+import { DownOutlined, InboxOutlined } from '@ant-design/icons'
+import { Card, Upload, message, Dropdown, Menu, Typography, Button } from 'antd'
 import { RcFile } from 'antd/lib/upload/interface'
 
 // 老师提供的例子
@@ -16,7 +16,7 @@ import { RcFile } from 'antd/lib/upload/interface'
 // } from '../../../shader/shaderUtil'
 import { createShader, createProgram } from '../../../shader/utils'
 
-import { noFilter, edgeDetectFilter, gaussinFilter } from '../../../shader/filters'
+import { filter, noFilter, edgeDetectFilter, gaussinFilter_3, gaussinFilter_5 } from '../../../shader/filters'
 
 const { Dragger } = Upload
 
@@ -47,10 +47,31 @@ const SingleImageUpload: React.FC<Props> = () => {
     }
   }
 
-  // shader invoke
+  // 下拉列表列表选择存储
+  const [selectedKey, setSelectedKey] = useState<string>('1')
+  // 每个kernel对应的索引
+  const filterMap = new Map([
+    ['1', 'No Filter'],
+    ['2', 'Gaussin Blur (3*3)'],
+    ['3', 'Gaussin Blur (5*5)'],
+    ['4', 'Edge Detection'],
+    ['5', 'others: undefined']
+  ])
+
+  const handleMenuClick = (e: { key: React.SetStateAction<string> }) => {
+    console.log('Current Item: ' + e.key + ', ' + filterMap.get(e.key))
+
+    setSelectedKey(e.key)
+    // console.log('Selected Successfully! The previous selected key is: ' + selectedKey)
+  }
+
+  // current canvas
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  // current filter used
+  const [currentFilter, setCurrentFilter] = useState<filter>(noFilter)
 
   useEffect(() => {
+    // 以下是所有的shader算法操作，在点击button时实现
     if (canvasRef.current) {
       const gl = canvasRef.current.getContext('webgl')
       if (!gl) {
@@ -62,9 +83,9 @@ const SingleImageUpload: React.FC<Props> = () => {
       gl.clear(gl.COLOR_BUFFER_BIT)
 
       // 在这林选择使用哪一个filter
-      const vertexShaderSource = noFilter.vs
+      const vertexShaderSource = currentFilter.vs
 
-      const fragmentShaderSource = noFilter.fs
+      const fragmentShaderSource = currentFilter.fs
 
       const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource)
       const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource)
@@ -108,6 +129,7 @@ const SingleImageUpload: React.FC<Props> = () => {
       }
     }
   }, [])
+
   return (
     <PageContainer>
       <Card>
@@ -127,16 +149,6 @@ const SingleImageUpload: React.FC<Props> = () => {
                   />
                 </div>
                 <canvas className={styles['origin-img']} ref={canvasRef} width={350} height={350} />
-                {/* <div className={styles['origin-img']}>
-                  <img
-                    src={imageUrl}
-                    alt='uploaded'
-                    style={{
-                      maxWidth: '100%',
-                      maxHeight: '100%'
-                    }}
-                  />
-                </div> */}
                 {/* 之后再继续kaifa,展示原图和结果图像的标志性文字 */}
                 {/* <div className={styles['image-name-boxes']}>
                   <div>Origin</div>
@@ -156,16 +168,44 @@ const SingleImageUpload: React.FC<Props> = () => {
                 </p>
                 <p className='ant-upload-text'>Click or drag file to this area to upload</p>
                 <p className='ant-upload-hint'>
-                  Support for a single or bulk upload. Strictly prohibit from uploading company data or other band
+                  Support for a single or bulsk upload. Strictly prohibit from uploading company data or other band
                   files.
                 </p>
               </Dragger>
             )}
           </div>
-          {/* <p className='ant-upload-drag-icon'>
-            <InboxOutlined />
-          </p> */}
         </Card>
+        <br />
+        {/* 下拉列表选择算法 */}
+        <Dropdown
+          overlay={
+            <Menu onClick={handleMenuClick} itemID={selectedKey} selectable defaultSelectedKeys={['1']}>
+              <Menu.Item key='1' onClick={() => setCurrentFilter(noFilter)}>
+                {filterMap.get('1')}
+              </Menu.Item>
+              <Menu.Item key='2' onClick={() => setCurrentFilter(gaussinFilter_3)}>
+                {filterMap.get('2')}
+              </Menu.Item>
+              <Menu.Item key='3' onClick={() => setCurrentFilter(gaussinFilter_5)}>
+                {filterMap.get('3')}
+              </Menu.Item>
+              <Menu.Item key='4' onClick={() => setCurrentFilter(edgeDetectFilter)}>
+                {filterMap.get('4')}
+              </Menu.Item>
+              <Menu.Item key='5' onClick={() => setCurrentFilter()}>
+                {filterMap.get('5')}
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <Typography.Link>
+            Hover me to select algorithm <DownOutlined />
+          </Typography.Link>
+        </Dropdown>
+        <Button style={{ float: 'right', marginLeft: '5px' }}>Save</Button>
+        <Button type='primary' style={{ float: 'right' }}>
+          Apply
+        </Button>
       </Card>
     </PageContainer>
   )
