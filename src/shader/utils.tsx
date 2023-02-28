@@ -43,3 +43,8 @@ export function createProgram(
 
   return program
 }
+
+export function getCanvasImageUrl(canvas: HTMLCanvasElement): string {
+  const imageData = canvas.toDataURL('image/png')
+  return imageData
+}

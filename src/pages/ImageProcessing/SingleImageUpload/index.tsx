@@ -14,7 +14,7 @@ import { RcFile } from 'antd/lib/upload/interface'
 //   set2DTexture,
 //   getAttrib
 // } from '../../../shader/shaderUtil'
-import { createShader, createProgram } from '../../../shader/utils'
+import { createShader, createProgram, getCanvasImageUrl } from '../../../shader/utils'
 
 import { filter, noFilter, edgeDetectFilter, gaussinFilter_3, gaussinFilter_5 } from '../../../shader/filters'
 
@@ -74,11 +74,11 @@ const SingleImageUpload: React.FC<Props> = () => {
 
   useEffect(() => {
     // 检查 localStorage 中是否存在存储的数据
-    const data = JSON.parse(localStorage.getItem('imageProcess'))
-    if (data) {
-      setImageUrl(data.originImage)
-      setResultUrl(data.resultImage)
-    }
+    // const data = JSON.parse(localStorage.getItem('imageProcess'))
+    // if (data) {
+    //   setImageUrl(data.originImage)
+    //   setResultUrl(data.resultImage)
+    // }
 
     // 以下是所有的shader算法操作，应该在点击button时实现
     if (canvasRef.current) {
@@ -91,7 +91,7 @@ const SingleImageUpload: React.FC<Props> = () => {
       gl.clearColor(1, 1, 1, 1)
       gl.clear(gl.COLOR_BUFFER_BIT)
 
-      // 在这林选择使用哪一个filter
+      // 在这选择使用哪一个filter
       const vertexShaderSource = currentFilter.vs
 
       const fragmentShaderSource = currentFilter.fs
@@ -136,6 +136,8 @@ const SingleImageUpload: React.FC<Props> = () => {
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image)
         gl.drawArrays(gl.TRIANGLES, 0, 6)
       }
+
+      setResultUrl(getCanvasImageUrl(canvasRef.current))
     }
   }, [currentFilter])
 
@@ -151,11 +153,16 @@ const SingleImageUpload: React.FC<Props> = () => {
       }
       // 存储数据到 localStorage
       localStorage.setItem('imageProcess', JSON.stringify(data))
+      console.log('current local:' + localStorage.getItem('imageProcess'))
+
       message.success('Successfuyl!')
     } else {
       message.error('No Result imagme here!')
     }
   }
+
+  //handle Download
+  const handleDownload = () => {}
 
   return (
     <PageContainer>
@@ -227,7 +234,12 @@ const SingleImageUpload: React.FC<Props> = () => {
             Hover me to select algorithm <DownOutlined />
           </Typography.Link>
         </Dropdown>
-        <Button style={{ float: 'right', marginLeft: '5px' }}>Download</Button>
+        <Button
+          style={{ float: 'right', marginLeft: '5px' }}
+          // onClick={() => handleDownload}
+        >
+          Download
+        </Button>
         <Button type='primary' style={{ float: 'right', marginLeft: '5px' }} onClick={handleSave}>
           Save
         </Button>
