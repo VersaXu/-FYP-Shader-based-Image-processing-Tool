@@ -206,3 +206,100 @@ export const gaussinFilter_5: filter = {
 
         `
 }
+/**
+ * The image filter find the horizontal edge.
+ * @modu                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   type {object}
+ */
+export const Sobel_x: filter = {
+  // vertex shader
+  vs: `
+  attribute vec4 a_Position;
+  attribute vec2 a_TexCoord;
+  varying vec2 v_TexCoord;
+  
+  void main() {
+      gl_Position = a_Position;
+      v_TexCoord = a_TexCoord;
+  }
+  
+          `,
+
+  // fragment shader 里面做kernel，矩阵点乘
+  fs: `
+        
+  precision mediump float;
+
+uniform sampler2D u_Texture;
+varying vec2 v_TexCoord;
+uniform vec2 u_TextureSize;
+
+void main() {
+    float kernel[9];
+    kernel[0] = -1.0; kernel[1] = -2.0; kernel[2] = -1.0;
+    kernel[3] = 0.0; kernel[4] = 0.0; kernel[5] = 0.0;
+    kernel[6] = -1.0; kernel[7] = -2.0; kernel[8] = -1.0;
+
+    vec2 texelSize = vec2(1.0 / u_TextureSize.x, 1.0 / u_TextureSize.y);
+    vec3 pixel = vec3(0.0);
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            vec2 offset = vec2(float(i - 1), float(j - 1)) * texelSize;
+            pixel += texture2D(u_Texture, v_TexCoord + offset).rgb * kernel[i * 3 + j];
+        }
+    }
+
+    gl_FragColor = vec4(vec3(length(pixel)), 1.0);
+}
+
+        `
+}
+
+/**
+ * The image filter find the vertical edge.
+ * @modu                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   type {object}
+ */
+export const Sobel_y: filter = {
+  // vertex shader
+  vs: `
+  attribute vec4 a_Position;
+  attribute vec2 a_TexCoord;
+  varying vec2 v_TexCoord;
+  
+  void main() {
+      gl_Position = a_Position;
+      v_TexCoord = a_TexCoord;
+  }
+  
+          `,
+
+  // fragment shader 里面做kernel，矩阵点乘
+  fs: `
+        
+  precision mediump float;
+
+uniform sampler2D u_Texture;
+varying vec2 v_TexCoord;
+uniform vec2 u_TextureSize;
+
+void main() {
+    float kernel[9];
+    kernel[0] = -1.0; kernel[1] = 0.0; kernel[2] = 1.0;
+    kernel[3] = -2.0; kernel[4] = 0.0; kernel[5] = 2.0;
+    kernel[6] = -1.0; kernel[7] = 0.0; kernel[8] = 1.0;
+
+    vec2 texelSize = vec2(1.0 / u_TextureSize.x, 1.0 / u_TextureSize.y);
+    vec3 pixel = vec3(0.0);
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            vec2 offset = vec2(float(i - 1), float(j - 1)) * texelSize;
+            pixel += texture2D(u_Texture, v_TexCoord + offset).rgb * kernel[i * 3 + j];
+        }
+    }
+
+    gl_FragColor = vec4(vec3(length(pixel)), 1.0);
+}
+
+        `
+}

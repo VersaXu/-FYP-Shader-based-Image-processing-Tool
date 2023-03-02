@@ -16,7 +16,15 @@ import { RcFile } from 'antd/lib/upload/interface'
 // } from '../../../shader/shaderUtil'
 import { createShader, createProgram, getCanvasImageUrl } from '../../../shader/utils'
 
-import { filter, noFilter, edgeDetectFilter, gaussinFilter_3, gaussinFilter_5 } from '../../../shader/filters'
+import {
+  filter,
+  noFilter,
+  edgeDetectFilter,
+  gaussinFilter_3,
+  gaussinFilter_5,
+  Sobel_x,
+  Sobel_y
+} from '../../../shader/filters'
 
 const { Dragger } = Upload
 
@@ -57,7 +65,8 @@ const SingleImageUpload: React.FC<Props> = () => {
     ['2', 'Gaussin Blur (3*3)'],
     ['3', 'Gaussin Blur (5*5)'],
     ['4', 'Edge Detection'],
-    ['5', 'others: undefined']
+    ['5', 'Sobel Edge X'],
+    ['6', 'Sobel Edge Y']
   ])
 
   const handleMenuClick = (e: { key: React.SetStateAction<string> }) => {
@@ -226,7 +235,12 @@ const SingleImageUpload: React.FC<Props> = () => {
               <Menu.Item key='4' onClick={() => setCurrentFilter(edgeDetectFilter)}>
                 {filterMap.get('4')}
               </Menu.Item>
-              <Menu.Item key='5'>{filterMap.get('5')}</Menu.Item>
+              <Menu.Item key='5' onClick={() => setCurrentFilter(Sobel_x)}>
+                {filterMap.get('5')}
+              </Menu.Item>
+              <Menu.Item key='6' onClick={() => setCurrentFilter(Sobel_y)}>
+                {filterMap.get('6')}
+              </Menu.Item>
             </Menu>
           }
         >
