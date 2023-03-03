@@ -64,7 +64,7 @@ const SingleImageUpload: React.FC<Props> = () => {
     ['1', 'No Filter'],
     ['2', 'Gaussin Blur (3*3)'],
     ['3', 'Gaussin Blur (5*5)'],
-    ['4', 'Edge Detection'],
+    ['4', 'Canny Edge Detection'],
     ['5', 'Sobel Edge X'],
     ['6', 'Sobel Edge Y']
   ])
