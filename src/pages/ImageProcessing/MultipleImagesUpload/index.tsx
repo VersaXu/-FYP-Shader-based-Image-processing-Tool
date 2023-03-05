@@ -236,6 +236,25 @@ const MultipleImagesUpload: React.FC = () => {
   //   }
   // }
 
+  // handle save
+  // const handleSave = () => {
+  //   if (resultUrl) {
+  //     const data = {
+  //       id: new Date().getTime(),
+  //       type: 'single image',
+  //       originImage: imageUrl,
+  //       resultImage: resultUrl,
+  //       timestamp: new Date().toISOString()
+  //     }
+  //     // 存储数据到 localStorage, 这里应该是一个结果数组
+  //     localStorage.setItem('imageProcess', JSON.stringify(data))
+  //     console.log('current local:' + localStorage.getItem('imageProcess'))
+
+  //     message.success('Successfuyl!')
+  //   } else {
+  //     message.error('No Result imagme here!')
+  //   }
+  // }
   //handle Download
   const handleDownload = () => {}
 
@@ -265,38 +284,50 @@ const MultipleImagesUpload: React.FC = () => {
                 src={previewImage}
               />
             </Modal>
-            <br />
-            <br />
-            {/* 下拉列表选择算法 */}
-            <Dropdown
-              overlay={
-                <Menu onClick={handleMenuClick} itemID={selectedKey} selectable defaultSelectedKeys={['1']}>
-                  <Menu.Item key='1' onClick={() => setCurrentFilter(noFilter)}>
-                    {filterMap.get('1')}
-                  </Menu.Item>
-                  <Menu.Item key='2' onClick={() => setCurrentFilter(gaussinFilter_3)}>
-                    {filterMap.get('2')}
-                  </Menu.Item>
-                  <Menu.Item key='3' onClick={() => setCurrentFilter(gaussinFilter_5)}>
-                    {filterMap.get('3')}
-                  </Menu.Item>
-                  <Menu.Item key='4' onClick={() => setCurrentFilter(edgeDetectFilter)}>
-                    {filterMap.get('4')}
-                  </Menu.Item>
-                  <Menu.Item key='5' onClick={() => setCurrentFilter(Sobel_x)}>
-                    {filterMap.get('5')}
-                  </Menu.Item>
-                  <Menu.Item key='6' onClick={() => setCurrentFilter(Sobel_y)}>
-                    {filterMap.get('6')}
-                  </Menu.Item>
-                </Menu>
-              }
-            >
-              <Typography.Link>
-                Hover me to select algorithm <DownOutlined />
-              </Typography.Link>
-            </Dropdown>
           </Card>
+          <br />
+          {/* 下拉列表选择算法 */}
+          <Dropdown
+            overlay={
+              <Menu onClick={handleMenuClick} itemID={selectedKey} selectable defaultSelectedKeys={['1']}>
+                <Menu.Item key='1' onClick={() => setCurrentFilter(noFilter)}>
+                  {filterMap.get('1')}
+                </Menu.Item>
+                <Menu.Item key='2' onClick={() => setCurrentFilter(gaussinFilter_3)}>
+                  {filterMap.get('2')}
+                </Menu.Item>
+                <Menu.Item key='3' onClick={() => setCurrentFilter(gaussinFilter_5)}>
+                  {filterMap.get('3')}
+                </Menu.Item>
+                <Menu.Item key='4' onClick={() => setCurrentFilter(edgeDetectFilter)}>
+                  {filterMap.get('4')}
+                </Menu.Item>
+                <Menu.Item key='5' onClick={() => setCurrentFilter(Sobel_x)}>
+                  {filterMap.get('5')}
+                </Menu.Item>
+                <Menu.Item key='6' onClick={() => setCurrentFilter(Sobel_y)}>
+                  {filterMap.get('6')}
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            <Typography.Link>
+              Hover me to select algorithm <DownOutlined />
+            </Typography.Link>
+          </Dropdown>
+          <Button style={{ float: 'right', marginLeft: '5px' }} onClick={handleDownload}>
+            Download
+          </Button>
+          <Button
+            type='primary'
+            style={{ float: 'right', marginLeft: '5px' }}
+            // onClick={handleSave}
+          >
+            Save
+          </Button>
+          <Button type='primary' danger style={{ float: 'right' }} onClick={() => setFileList([])}>
+            Cancel
+          </Button>
         </Card>
       </PageContainer>
     </>

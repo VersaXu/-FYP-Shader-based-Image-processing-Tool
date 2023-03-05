@@ -5,15 +5,6 @@ import { DownOutlined, InboxOutlined } from '@ant-design/icons'
 import { Card, Upload, message, Dropdown, Menu, Typography, Button } from 'antd'
 import { RcFile } from 'antd/lib/upload/interface'
 
-// 老师提供的例子
-// import {
-//   createProgram,
-//   createShader,
-//   setRectangle,
-//   setBuffer,
-//   set2DTexture,
-//   getAttrib
-// } from '../../../shader/shaderUtil'
 import { createShader, createProgram, getCanvasImageUrl } from '../../../shader/utils'
 
 import {
@@ -38,6 +29,7 @@ const SingleImageUpload: React.FC<Props> = () => {
   const imageExtensions = ['.png', '.jpg', '.jpeg', '.svg']
   // 结果图片
   const [resultUrl, setResultUrl] = useState<string | null>(null)
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false)
 
   // 上传图片；及其规范
   const handleImageUpload = (file: RcFile) => {
@@ -82,13 +74,6 @@ const SingleImageUpload: React.FC<Props> = () => {
   const [currentFilter, setCurrentFilter] = useState<filter>(noFilter)
 
   useEffect(() => {
-    // 检查 localStorage 中是否存在存储的数据
-    // const data = JSON.parse(localStorage.getItem('imageProcess'))
-    // if (data) {
-    //   setImageUrl(data.originImage)
-    //   setResultUrl(data.resultImage)
-    // }
-
     // 以下是所有的shader算法操作，应该在点击button时实现
     if (canvasRef.current) {
       const gl = canvasRef.current.getContext('webgl')
@@ -132,6 +117,7 @@ const SingleImageUpload: React.FC<Props> = () => {
       texture.image = new Image()
       texture.image.onload = function () {
         handleLoadedTexture(gl, texture)
+        setImageLoaded(true)
       }
       texture.image.crossOrigin = ''
       texture.image.src = imageUrl!
@@ -148,7 +134,7 @@ const SingleImageUpload: React.FC<Props> = () => {
 
       setResultUrl(getCanvasImageUrl(canvasRef.current))
     }
-  }, [currentFilter])
+  }, [currentFilter, imageUrl])
 
   // handle save
   const handleSave = () => {
@@ -160,7 +146,7 @@ const SingleImageUpload: React.FC<Props> = () => {
         resultImage: resultUrl,
         timestamp: new Date().toISOString()
       }
-      // 存储数据到 localStorage
+      // 存储数据到 localStorage, 这里应该是一个结果数组
       localStorage.setItem('imageProcess', JSON.stringify(data))
       console.log('current local:' + localStorage.getItem('imageProcess'))
 
@@ -171,7 +157,18 @@ const SingleImageUpload: React.FC<Props> = () => {
   }
 
   //handle Download
-  const handleDownload = () => {}
+  const handleDownload = () => {
+    if (canvasRef.current && imageLoaded) {
+      const url = getCanvasImageUrl(canvasRef.current)
+      setResultUrl(url)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = 'result.png'
+      link.click()
+    } else {
+      message.error('No result image found!')
+    }
+  }
 
   return (
     <PageContainer>
@@ -248,10 +245,7 @@ const SingleImageUpload: React.FC<Props> = () => {
             Hover me to select algorithm <DownOutlined />
           </Typography.Link>
         </Dropdown>
-        <Button
-          style={{ float: 'right', marginLeft: '5px' }}
-          // onClick={() => handleDownload}
-        >
+        <Button style={{ float: 'right', marginLeft: '5px' }} onClick={handleDownload}>
           Download
         </Button>
         <Button type='primary' style={{ float: 'right', marginLeft: '5px' }} onClick={handleSave}>
