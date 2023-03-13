@@ -25,21 +25,6 @@ export type RouteProp = {
 }
 
 export const asyncRoutes: RouteProp[] = [
-  // {
-  //   path: '/',
-  //   redirect: '/dashboard',
-  //   name: 'home',
-  //   meta: { title: 'home', icon: <HomeOutlined /> },
-  //   children: [
-  //     {
-  //       path: 'dashboard',
-  //       name: 'Dashboard',
-  //       hideMenu: true,
-  //       component: loadable(() => import('@/pages/dashboard')),
-  //       meta: { title: 'home' }
-  //     }
-  //   ]
-  // },
   {
     path: '/',
     name: 'home',

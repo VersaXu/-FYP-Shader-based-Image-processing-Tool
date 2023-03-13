@@ -1,5 +1,3 @@
-import { type } from 'os'
-
 export type filter = {
   vs: string
   fs: string
@@ -85,7 +83,7 @@ export const edgeDetectFilter: filter = {
           vec4 color = vec4(0);
           mat3 edgeDetectionKernel = mat3(
                   -1, -1, -1,
-                  -1, 8, -1,
+                  -1, 9, -1,
                   -1, -1, -1
           );
           for(int i = 0; i < 3; i++) {
@@ -103,13 +101,8 @@ export const edgeDetectFilter: filter = {
 }
 
 /**
- * The image filters that use WebGL shader implement.
- * @module gaussinFilter
- */
-
-/**
  * This filter apply 3*3 Gaussin blur on the image.
- * @constant
+ * @module gaussinFilter
  * @type {object}
  */
 export const gaussinFilter_3: filter = {
@@ -152,7 +145,7 @@ export const gaussinFilter_3: filter = {
 
 /**
  * The image filters that use WebGL shader implement.
- * @modu                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   type {object}
+ * @module gaussinFilter
  */
 export const gaussinFilter_5: filter = {
   // vertex shader
@@ -205,6 +198,58 @@ export const gaussinFilter_5: filter = {
   
 
         `
+}
+
+/**
+ * The image filters that use WebGL shader implement.
+ * @module gaussinFilter_9                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 type {object}
+ */
+export const gaussinFilter_9: filter = {
+  // vertex shader
+  vs: `
+  attribute vec2 position;
+  varying vec2 texCoord;
+
+  void main() {
+    gl_Position = vec4(position, 0.0, 1.0);
+    texCoord = position * 0.5 + 0.5;
+  }
+`,
+
+  // fragment shader 里面做kernel，矩阵点乘
+  fs: `
+    precision mediump float;
+
+    varying vec2 texCoord;
+    uniform sampler2D texture;
+    uniform vec2 texelSize;
+
+    void main() {
+      vec2 offset = texelSize * 1.0;
+      vec4 color = vec4(0.0);
+
+      for (int i = -4; i <= 4; i++) {
+        for (int j = -4; j <= 4; j++) {
+          vec2 sampleCoord = texCoord + vec2(float(i), float(j)) * texelSize;
+          vec4 sampleColor = texture2D(texture, sampleCoord);
+
+          float weight = 0.0;
+
+          if (i == 0 && j == 0) {
+            weight = 0.393;
+          } else if (i == 0 || j == 0) {
+            weight = 0.212;
+          } else {
+            weight = 0.094;
+          }
+
+          color += sampleColor * weight;
+        }
+      }
+
+      gl_FragColor = color;
+    }
+  `
 }
 /**
  * The image filter find the horizontal edge.

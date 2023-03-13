@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import PageContainer from '@/components/PageContainer'
 import styles from './index.module.less'
-import { DownOutlined, InboxOutlined } from '@ant-design/icons'
-import { Card, Upload, message, Dropdown, Menu, Typography, Button } from 'antd'
+import { DownOutlined, InboxOutlined, QuestionCircleOutlined } from '@ant-design/icons'
+import { Card, Upload, message, Dropdown, Menu, Typography, Button, Popconfirm } from 'antd'
 import { RcFile } from 'antd/lib/upload/interface'
 
-import { createShader, createProgram, getCanvasImageUrl } from '../../../shader/utils'
+import { createShader, createProgram } from '../../../shader/utils'
 
 import {
   filter,
@@ -13,6 +13,7 @@ import {
   edgeDetectFilter,
   gaussinFilter_3,
   gaussinFilter_5,
+  gaussinFilter_9,
   Sobel_x,
   Sobel_y
 } from '../../../shader/filters'
@@ -27,9 +28,10 @@ const SingleImageUpload: React.FC<Props> = () => {
   // 原图片url
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const imageExtensions = ['.png', '.jpg', '.jpeg', '.svg']
+
   // 结果图片
   const [resultUrl, setResultUrl] = useState<string | null>(null)
-  const [imageLoaded, setImageLoaded] = useState<boolean>(false)
+  // const [imageLoaded, setImageLoaded] = useState<boolean>(false)
 
   // 上传图片；及其规范
   const handleImageUpload = (file: RcFile) => {
@@ -56,9 +58,10 @@ const SingleImageUpload: React.FC<Props> = () => {
     ['1', 'No Filter'],
     ['2', 'Gaussin Blur (3*3)'],
     ['3', 'Gaussin Blur (5*5)'],
-    ['4', 'Canny Edge Detection'],
-    ['5', 'Sobel Edge X'],
-    ['6', 'Sobel Edge Y']
+    ['4', 'Gaussin Blur (9*9)'],
+    ['5', 'Canny Edge Detection'],
+    ['6', 'Sobel Edge X'],
+    ['7', 'Sobel Edge Y']
   ])
 
   const handleMenuClick = (e: { key: React.SetStateAction<string> }) => {
@@ -75,8 +78,11 @@ const SingleImageUpload: React.FC<Props> = () => {
 
   useEffect(() => {
     // 以下是所有的shader算法操作，应该在点击button时实现
-    if (canvasRef.current) {
-      const gl = canvasRef.current.getContext('webgl')
+    // 可以改成getElementBYID
+    const canvas = canvasRef.current
+    console.log('TEST 1' + canvas)
+    if (canvas) {
+      const gl = canvas.getContext('webgl')
       if (!gl) {
         console.log('WebGL not supported')
         return
@@ -92,11 +98,12 @@ const SingleImageUpload: React.FC<Props> = () => {
 
       const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource)
       const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource)
-
+      gl.getShaderInfoLog(fragmentShader)
       // 创建shader program, 目的是连接两个shader的作用。
       const program = createProgram(gl, vertexShader, fragmentShader)
       const positionAttributeLocation = gl.getAttribLocation(program, 'position')
-      const colorUniformLocation = gl.getUniformLocation(program, 'color')
+
+      // const colorUniformLocation = gl.getUniformLocation(program, 'color')
 
       // 创建buffer
       const positionBuffer = gl.createBuffer()
@@ -109,19 +116,24 @@ const SingleImageUpload: React.FC<Props> = () => {
 
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, -1, 1, 1, -1, 1, 1, 1, -1, -1, 1]), gl.STATIC_DRAW)
 
-      // The ! after gl.createTexture() tells TypeScript that you are certain that
-      // the return value will not be null.
-
       // 创建 texture
       const texture = gl.createTexture() as WebGLTexture & { image: HTMLImageElement }
+      console.log('TEXT original image' + imageUrl)
+
       texture.image = new Image()
+
+      // 这里着重强调异步！否则会在转化的时候，纹理还没有加载到canvas上
       texture.image.onload = function () {
-        handleLoadedTexture(gl, texture)
-        setImageLoaded(true)
+        handleLoadedTexture(gl, texture, function () {
+          const url = canvas.toDataURL('image/png')
+          console.log(url)
+          setResultUrl(url)
+        })
       }
       texture.image.crossOrigin = ''
       texture.image.src = imageUrl!
 
+      // 加载texture
       function handleLoadedTexture(gl: WebGLRenderingContext, texture: WebGLTexture, callback?: () => void) {
         gl.bindTexture(gl.TEXTURE_2D, texture)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
@@ -130,12 +142,23 @@ const SingleImageUpload: React.FC<Props> = () => {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST)
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image)
         gl.drawArrays(gl.TRIANGLES, 0, 6)
-      }
 
-      setResultUrl(getCanvasImageUrl(canvasRef.current))
+        if (callback) {
+          callback()
+        }
+      }
     }
   }, [currentFilter, imageUrl])
 
+  // handle cancel
+  const handleCancel = () => {
+    console.log('Cancel cancel button')
+  }
+
+  //handle ok
+  const handleConfirm = () => {
+    setImageUrl(null)
+  }
   // handle save
   const handleSave = () => {
     if (resultUrl) {
@@ -144,13 +167,15 @@ const SingleImageUpload: React.FC<Props> = () => {
         type: 'single image',
         originImage: imageUrl,
         resultImage: resultUrl,
-        timestamp: new Date().toISOString()
+        date: new Date().toISOString()
       }
       // 存储数据到 localStorage, 这里应该是一个结果数组
-      localStorage.setItem('imageProcess', JSON.stringify(data))
-      console.log('current local:' + localStorage.getItem('imageProcess'))
+      // localStorage.setItem('imageProcess', JSON.stringify(data))
+      // console.log('current local:' + localStorage.getItem('imageProcess'))
 
-      message.success('Successfuyl!')
+      // api POST, 上传到record database
+
+      message.success('Successful!')
     } else {
       message.error('No Result imagme here!')
     }
@@ -158,13 +183,14 @@ const SingleImageUpload: React.FC<Props> = () => {
 
   //handle Download
   const handleDownload = () => {
-    if (canvasRef.current && imageLoaded) {
-      const url = getCanvasImageUrl(canvasRef.current)
-      setResultUrl(url)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = 'result.png'
-      link.click()
+    if (resultUrl) {
+      setTimeout(() => {
+        const url = resultUrl
+        const link = document.createElement('a')
+        link.href = url
+        link.download = 'result.png'
+        link.click()
+      }, 1000)
     } else {
       message.error('No result image found!')
     }
@@ -189,7 +215,7 @@ const SingleImageUpload: React.FC<Props> = () => {
                   />
                 </div>
                 <canvas className={styles['origin-img']} ref={canvasRef} width={350} height={350} />
-                {/* 之后再继续kaifa,展示原图和结果图像的标志性文字 */}
+                {/* 展示原图和结果图像的标志性文字 */}
                 {/* <div className={styles['image-name-boxes']}>
                   <div>Origin</div>
                   <div>Result</div>
@@ -229,14 +255,17 @@ const SingleImageUpload: React.FC<Props> = () => {
               <Menu.Item key='3' onClick={() => setCurrentFilter(gaussinFilter_5)}>
                 {filterMap.get('3')}
               </Menu.Item>
-              <Menu.Item key='4' onClick={() => setCurrentFilter(edgeDetectFilter)}>
+              <Menu.Item key='4' onClick={() => setCurrentFilter(gaussinFilter_9)}>
                 {filterMap.get('4')}
               </Menu.Item>
-              <Menu.Item key='5' onClick={() => setCurrentFilter(Sobel_x)}>
+              <Menu.Item key='5' onClick={() => setCurrentFilter(edgeDetectFilter)}>
                 {filterMap.get('5')}
               </Menu.Item>
-              <Menu.Item key='6' onClick={() => setCurrentFilter(Sobel_y)}>
+              <Menu.Item key='6' onClick={() => setCurrentFilter(Sobel_x)}>
                 {filterMap.get('6')}
+              </Menu.Item>
+              <Menu.Item key='7' onClick={() => setCurrentFilter(Sobel_y)}>
+                {filterMap.get('7')}
               </Menu.Item>
             </Menu>
           }
@@ -251,9 +280,19 @@ const SingleImageUpload: React.FC<Props> = () => {
         <Button type='primary' style={{ float: 'right', marginLeft: '5px' }} onClick={handleSave}>
           Save
         </Button>
-        <Button type='primary' danger style={{ float: 'right' }} onClick={() => setImageUrl(null)}>
-          Cancel
-        </Button>
+        <Popconfirm
+          title='Delete the current image?'
+          icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+          okButtonProps={{ danger: true, type: 'danger' }}
+          okText='Yes'
+          cancelText='No'
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        >
+          <Button type='primary' danger style={{ float: 'right' }} onClick={handleCancel}>
+            Cancel
+          </Button>
+        </Popconfirm>
       </Card>
     </PageContainer>
   )

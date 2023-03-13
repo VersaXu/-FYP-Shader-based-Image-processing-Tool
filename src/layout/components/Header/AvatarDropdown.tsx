@@ -3,6 +3,7 @@ import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import { Avatar, Menu } from 'antd'
 import HeaderDropdown from '../HeaderDropdown'
 import styles from './index.module.less'
+import { useUserStore } from '@/store/useUserStore'
 
 export type GlobalHeaderRightProps = {
   menu?: boolean
@@ -10,10 +11,11 @@ export type GlobalHeaderRightProps = {
 
 const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   const [currentUser, setCurrentUser] = useState({
-    name: 'Test Account',
+    email: 'Test Email',
     avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
     userid: '00000001'
   })
+  const { removeUser } = useUserStore()
   const onMenuClick = () => {
     console.log('sd')
   }
@@ -28,7 +30,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
       )}
       {menu && <Menu.Divider />}
 
-      <Menu.Item key='logout'>
+      <Menu.Item key='logout' onClick={removeUser}>
         <LogoutOutlined />
         Sign out
       </Menu.Item>
@@ -38,7 +40,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
     <HeaderDropdown overlay={menuHeaderDropdown}>
       <span className={`${styles.action} ${styles.account}`}>
         <Avatar size='small' className={styles.avatar} src={currentUser.avatar} alt='avatar' />
-        <span className={`${styles.name} anticon`}>{currentUser.name}</span>
+        <span className={`${styles.name} anticon`}>{currentUser.email}</span>
       </span>
     </HeaderDropdown>
   )

@@ -4,7 +4,7 @@ import { asyncRoutes } from './config'
 import { isExternal } from '@/utils/validate'
 import loadable from '@loadable/component'
 // 懒加载
-const Login = loadable(() => import('@/pages/login'))
+const Login = loadable(() => import('@/pages/user/login'))
 const resolvePath = (uPath: string, routePath: string) => {
   if (isExternal(routePath)) {
     return routePath
@@ -41,7 +41,7 @@ const RouterPages: React.FC = () => {
     <Routes>
       {routeArr}
       <Route path='/login' element={<Login />} key='login' />
-      <Route path='*' element={<Navigate to='/dashboard' replace />} />
+      <Route path='*' element={<Navigate to='/home' replace />} />
     </Routes>
   )
 }

@@ -4,7 +4,6 @@ import { Modal, Upload, Card, Button, message, Dropdown, Typography, Space, Menu
 import type { RcFile, UploadProps } from 'antd/es/upload'
 import type { UploadFile } from 'antd/es/upload/interface'
 import PageContainer from '@/components/PageContainer'
-import fs from 'fs'
 import { getImageUrl } from '@/utils'
 
 import { createShader, createProgram, getCanvasImageUrl } from '../../../shader/utils'
@@ -30,7 +29,7 @@ const getBase64 = (file: RcFile): Promise<string> =>
     reader.onerror = error => reject(error)
   })
 
-const MultipleImagesUpload: React.FC = () => {
+const MultipleImagesUpload: React.FC<Props> = () => {
   // In total, there are 3 types of uploading an image
   // <= 16 Only
   const imageExtensions = ['.png', '.jpg', '.jpeg', '.svg']
@@ -38,7 +37,7 @@ const MultipleImagesUpload: React.FC = () => {
   const [previewImage, setPreviewImage] = useState('')
   const [previewTitle, setPreviewTitle] = useState('')
   // original images list
-  const [fileList, setFileList] = useState<UploadFile[]>([
+  const [imagesUrl, setImagesUrl] = useState<UploadFile[]>([
     {
       uid: '-1',
       name: 'image.png',
@@ -78,19 +77,19 @@ const MultipleImagesUpload: React.FC = () => {
 
   const handleCancel = () => setPreviewOpen(false)
   // 展示图片
-  const handlePreview = async (file: UploadFile) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj as RcFile)
+  const handlePreview = async (img: UploadFile) => {
+    if (!img.url && !img.preview) {
+      img.preview = await getBase64(img.originFileObj as RcFile)
     }
 
-    setPreviewImage(file.url || (file.preview as string))
+    setPreviewImage(img.url || (img.preview as string))
     setPreviewOpen(true)
-    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1))
+    setPreviewTitle(img.name || img.url!.substring(img.url!.lastIndexOf('/') + 1))
     console.log('Current focusing image:' + previewImage)
   }
   // 同步
   const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
-    setFileList(newFileList)
+    setImagesUrl(newFileList)
     // 等一会儿改一下数据结构，创建一个专门用于表示图片object的type
     const details: any[] = []
     newFileList.map(img => {
@@ -110,20 +109,20 @@ const MultipleImagesUpload: React.FC = () => {
 
   // big size directory to limit the format of the images from the chosen directory
   // 自己手写完成上传函数
-  const handleImageUpload = (file: any) => {
-    if (imageExtensions.includes(file.name.slice(-4))) {
+  const handleImageUpload = (img: any) => {
+    if (imageExtensions.includes(img.name.slice(-4))) {
       const reader = new FileReader()
       reader.addEventListener('load', () => {
-        const newFileList = [...fileList]
-        newFileList.push({
+        const newImageList = [...imagesUrl]
+        newImageList.push({
           uid: Date.now().toString(),
-          name: file.name,
+          name: img.name,
           status: 'done',
           url: reader.result as string
         })
-        setFileList(newFileList)
+        setImagesUrl(newImageList)
       })
-      reader.readAsDataURL(file)
+      reader.readAsDataURL(img)
       message.success('Successfully upload the image')
     } else {
       message.error('Error')
@@ -202,6 +201,7 @@ const MultipleImagesUpload: React.FC = () => {
       texture.image.src = imageUrl!
 
       // 这边要对每一个gl进行一个纹理的展示
+      // 然后将把所有的结果url储存到
       function handleLoadedTexture(gl: WebGLRenderingContext, texture: WebGLTexture, callback?: () => void) {
         gl.bindTexture(gl.TEXTURE_2D, texture)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
@@ -217,24 +217,24 @@ const MultipleImagesUpload: React.FC = () => {
   }, [currentFilter])
 
   // handle save a list of the images
-  // const handleSave = () => {
-  //   if (resultUrl) {
-  //     const data = {
-  //       id: new Date().getTime(),
-  //       type: 'single image',
-  //       originImage: imageUrl,
-  //       resultImage: resultUrl,
-  //       timestamp: new Date().toISOString()
-  //     }
-  //     // 存储数据到 localStorage
-  //     localStorage.setItem('imageProcess', JSON.stringify(data))
-  //     console.log('current local:' + localStorage.getItem('imageProcess'))
+  const handleSave = () => {
+    if (resultsUrl) {
+      const data = {
+        id: new Date().getTime(),
+        type: 'single image',
+        originImage: imagesUrl,
+        resultImage: resultsUrl,
+        timestamp: new Date().toISOString()
+      }
+      // 存储数据到 localStorage
+      localStorage.setItem('imageProcess', JSON.stringify(data))
+      console.log('current local:' + localStorage.getItem('imageProcess'))
 
-  //     message.success('Successfuyl!')
-  //   } else {
-  //     message.error('No Result imagme here!')
-  //   }
-  // }
+      message.success('Successfuyl!')
+    } else {
+      message.error('No Result imagme here!')
+    }
+  }
 
   // handle save
   // const handleSave = () => {
@@ -267,7 +267,7 @@ const MultipleImagesUpload: React.FC = () => {
             <br />
             <Upload
               listType='picture-card'
-              fileList={fileList}
+              fileList={imagesUrl}
               onPreview={handlePreview}
               onChange={handleChange}
               beforeUpload={file => {
@@ -275,7 +275,7 @@ const MultipleImagesUpload: React.FC = () => {
                 return false
               }}
             >
-              {fileList.length >= 16 ? null : uploadButton}
+              {imagesUrl.length >= 16 ? null : uploadButton}
             </Upload>
             <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
               <img
@@ -325,7 +325,7 @@ const MultipleImagesUpload: React.FC = () => {
           >
             Save
           </Button>
-          <Button type='primary' danger style={{ float: 'right' }} onClick={() => setFileList([])}>
+          <Button type='primary' danger style={{ float: 'right' }} onClick={() => setImagesUrl([])}>
             Cancel
           </Button>
         </Card>
