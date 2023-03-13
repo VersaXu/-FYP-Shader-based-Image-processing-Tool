@@ -12,6 +12,8 @@ import styles from './index.module.less'
 // import { apiGetClusterConfig, apiDeleteClusters } from '@/apis/cluster'
 // import EditClusterModal from './components/EditCluster/EditClusterModal'
 // import FilterContent from '@/components/FilterContent'
+import recordStore from '@/store/useRecordStore'
+import { Record } from '@/store/useRecordStore'
 
 // 示例
 const handleMenuClick: MenuProps['onClick'] = e => {
@@ -48,29 +50,38 @@ const menu = (
 const ProcessingHistory: React.FC = () => {
   const columns: ColumnsType<any> = [
     {
-      title: 'Process Name',
-      dataIndex: 'name',
-      width: 130
-    },
-    {
-      title: 'description',
-      dataIndex: 'comment',
-      width: 200
+      title: 'Process ID',
+      dataIndex: 'id',
+      width: 110
     },
     {
       title: 'Upload Type',
       dataIndex: 'type',
-      width: 110
+      width: 130
     },
     {
-      title: 'Images Info',
-      dataIndex: 'images',
+      title: 'Original Images',
+      dataIndex: 'original_img',
       width: 220,
       // 这里是去了第一个字段的ip和端口，没有渲染所有的
       render: (value: any[]) => {
         let res = ''
         value.forEach((item, index) => {
-          res = res + item.ip + ':' + item.port
+          res = res + item[0]
+          if (index !== value.length - 1) res += ','
+        })
+        return res
+      }
+    },
+    {
+      title: 'Result',
+      dataIndex: 'result_img',
+      width: 220,
+      // 这里是去了第一个字段的ip和端口，没有渲染所有的
+      render: (value: any[]) => {
+        let res = ''
+        value.forEach((item, index) => {
+          res = res + item[0]
           if (index !== value.length - 1) res += ','
         })
         return res
@@ -78,7 +89,7 @@ const ProcessingHistory: React.FC = () => {
     },
     {
       title: 'Last Update',
-      dataIndex: 'updateTime',
+      dataIndex: 'date',
       width: 200,
       sorter: (a, b) => {
         console.log('object', a, b)
@@ -116,6 +127,15 @@ const ProcessingHistory: React.FC = () => {
     }
   ]
 
+  // control load the record store
+  useEffect(() => {
+    const fetchRecords = async () => {
+      const records = await recordStore.getRecords(1, 100)
+      console.log('TEST STORE: ' + JSON.stringify(records))
+      setDataSource(records)
+    }
+    fetchRecords()
+  }, [])
   // 表格分页样式
   const [pageOption, setPageOption] = useState({
     pageNo: 1,
@@ -164,7 +184,7 @@ const ProcessingHistory: React.FC = () => {
   // 标记所选items
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   // 获取及改变数据
-  const [dataSource, setDataSource] = useState<any[]>([])
+  const [dataSource, setDataSource] = useState<Record[]>([])
 
   // // 同步监听
   // useEffect(() => {

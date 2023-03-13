@@ -18,6 +18,8 @@ import {
   Sobel_y
 } from '../../../shader/filters'
 
+import recordStore from '@/store/useRecordStore'
+
 const { Dragger } = Upload
 
 interface Props {
@@ -98,7 +100,7 @@ const SingleImageUpload: React.FC<Props> = () => {
 
       const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource)
       const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource)
-      gl.getShaderInfoLog(fragmentShader)
+
       // 创建shader program, 目的是连接两个shader的作用。
       const program = createProgram(gl, vertexShader, fragmentShader)
       const positionAttributeLocation = gl.getAttribLocation(program, 'position')
@@ -149,6 +151,15 @@ const SingleImageUpload: React.FC<Props> = () => {
       }
     }
   }, [currentFilter, imageUrl])
+
+  // control load the record store
+  useEffect(() => {
+    const fetchRecords = async () => {
+      const records = await recordStore.getRecords(1, 100)
+      console.log('TEST STORE: ' + JSON.stringify(records))
+    }
+    fetchRecords()
+  }, [])
 
   // handle cancel
   const handleCancel = () => {
@@ -283,7 +294,7 @@ const SingleImageUpload: React.FC<Props> = () => {
         <Popconfirm
           title='Delete the current image?'
           icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-          okButtonProps={{ danger: true, type: 'danger' }}
+          okButtonProps={{ type: 'danger' }}
           okText='Yes'
           cancelText='No'
           onConfirm={handleConfirm}
